@@ -16,4 +16,4 @@ Está construido únicamente con **HTML**, **CSS** y **JavaScript** para recrear
 
 Puedes revisar y clonar el código directamente desde aca (o con git
 
-[**ENLACE AL REPOSITORIO DE GITHUB**](https://github.com/TuUsuario/TuRepositorio)
+[**ENLACE AL REPOSITORIO DE GITHUB**](https://github.com/AJDestroyer20/chatgpt-casero.git)
