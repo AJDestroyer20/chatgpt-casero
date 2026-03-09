@@ -1,0 +1,420 @@
+{
+  "intents": [
+
+    {
+      "tag": "greeting",
+      "patterns": ["hola", "hello", "hey", "buenas", "que tal", "buenos dias", "buenas tardes", "buenas noches", "saludos", "hi"],
+      "responses": [
+        "Hola 👋 ¿En qué puedo ayudarte hoy? Puedo responder sobre programación, ciencia, matemáticas, historia y mucho más.",
+        "¡Hey! Aquí estoy. Dime qué quieres saber y hago lo que puedo.",
+        "Hola, ¿qué necesitas? Puedo ayudarte con preguntas de tecnología, ciencia, programación o temas cotidianos.",
+        "¡Buenas! Cuéntame, ¿en qué te puedo echar una mano hoy?"
+      ]
+    },
+
+    {
+      "tag": "farewell",
+      "patterns": ["adios", "hasta luego", "chao", "bye", "nos vemos", "hasta pronto", "me voy"],
+      "responses": [
+        "¡Hasta luego! Si necesitas algo más, aquí estaré.",
+        "Adiós, fue un gusto ayudarte. ¡Vuelve cuando quieras!",
+        "Chao 👋 Que te vaya bien."
+      ]
+    },
+
+    {
+      "tag": "thanks",
+      "patterns": ["gracias", "muchas gracias", "thank you", "thanks", "te lo agradezco", "muy amable"],
+      "responses": [
+        "¡Con mucho gusto! Si tienes más dudas, aquí estoy.",
+        "De nada, para eso estoy 😊",
+        "No hay de qué. ¿Hay algo más en lo que pueda ayudarte?"
+      ]
+    },
+
+    {
+      "tag": "identity",
+      "patterns": ["quien eres", "que eres", "como te llamas", "tu nombre", "eres una ia", "eres un bot", "eres humano", "eres real"],
+      "responses": [
+        "Soy AJ-GPT, un asistente de inteligencia artificial en su versión 1. Estoy diseñado para responder preguntas sobre programación, ciencia, matemáticas, historia y temas cotidianos. No soy humano, soy un programa, pero hago mi mejor esfuerzo para ser útil.",
+        "Me llamo AJ-GPT v1. Soy una IA local creada para ayudarte a resolver dudas, aprender cosas nuevas y asistirte con tareas de programación o conocimiento general.",
+        "Soy AJ-GPT, un chatbot inteligente. Funciono con un sistema de detección de intenciones y una base de conocimiento que cubre muchos temas. Estoy en versión 1, así que aún tengo limitaciones, pero aprendo."
+      ]
+    },
+
+    {
+      "tag": "capabilities",
+      "patterns": ["que puedes hacer", "para que sirves", "que sabes", "en que me ayudas", "que haces", "cuales son tus funciones"],
+      "responses": [
+        "Puedo ayudarte con muchas cosas:\n\n• 💻 Programación: Python, JavaScript, Haxe, HTML, SQL, Git\n• 🔬 Ciencia: física, biología, química, astronomía\n• 📐 Matemáticas: operaciones, álgebra, geometría\n• 📚 Historia y geografía\n• 🎮 Videojuegos: Minecraft, modding de FNF\n• 🎵 Producción musical: FL Studio y conceptos básicos\n• 💡 Consejos cotidianos y conversación general\n\n¿Por dónde empezamos?",
+        "Soy bastante versátil. Puedo resolver operaciones matemáticas, explicar conceptos científicos, ayudarte con código, contarte historia y responder preguntas generales. Si no sé algo, te lo digo con honestidad."
+      ]
+    },
+
+    {
+      "tag": "feelings",
+      "patterns": ["como estas", "como te sientes", "estas bien", "que tal estas"],
+      "responses": [
+        "Funcionando al 100% 🟢 Sin bugs detectados... por ahora. ¿Y tú cómo estás?",
+        "Como toda IA que se respeta: siempre listo, nunca cansado. ¿En qué te ayudo?",
+        "¡Bien! O al menos mis procesos internos dicen que sí. ¿Qué necesitas?"
+      ]
+    },
+
+    {
+      "tag": "joke",
+      "patterns": ["chiste", "cuentame algo gracioso", "hazme reir", "dime un chiste"],
+      "responses": [
+        "¿Por qué los programadores prefieren el frío?\n\nPorque les tienen alergia a los bugs 🐛😄",
+        "Un profe pregunta: 'Si tienes 12 chocolates y te pido 5, ¿cuántos te quedan?'\nEl alumno: '12. Porque no te pienso dar ninguno.' 😂",
+        "¿Qué le dijo el 0 al 8?\n\n'Bonito cinturón.' 😄",
+        "Un desarrollador entra a un bar, pide 1 cerveza, pide 0 cervezas, pide 99999 cervezas... El bar se cae. 🍺"
+      ]
+    },
+
+    {
+      "tag": "math_basic",
+      "patterns": ["cuanto es", "cuanto da", "resolver", "calcular", "resultado de", "cuanto son", "operacion"],
+      "responses": [
+        "Dame la operación y la calculo al instante. Por ejemplo: '¿Cuánto es 15 × 8?' o '¿Cuánto es 144 / 12?'",
+        "Puedo resolver operaciones matemáticas directamente. Escríbeme la operación y te doy el resultado."
+      ]
+    },
+
+    {
+      "tag": "math_concepts",
+      "patterns": ["que es el algebra", "que es la geometria", "que es calculo", "que es una ecuacion", "que es una funcion matematica"],
+      "responses": [
+        "El **álgebra** es la rama de las matemáticas que trabaja con símbolos (letras) para representar números desconocidos y relaciones. Por ejemplo: si x + 5 = 12, entonces x = 7.",
+        "La **geometría** estudia las formas, tamaños, posiciones y propiedades de las figuras en el espacio. Incluye puntos, líneas, triángulos, círculos, cubos, etc.",
+        "El **cálculo** es la rama matemática que estudia el cambio y la acumulación. Se divide en cálculo diferencial (derivadas, tasas de cambio) y cálculo integral (áreas, acumulación).",
+        "Una **ecuación** es una igualdad matemática donde al menos un valor es desconocido. Resolverla significa encontrar el valor que hace la igualdad verdadera.",
+        "Una **función matemática** es una relación donde a cada valor de entrada (x) le corresponde exactamente un valor de salida (f(x)). Por ejemplo: f(x) = 2x + 1."
+      ]
+    },
+
+    {
+      "tag": "pi",
+      "patterns": ["que es pi", "numero pi", "valor de pi", "pi matematicas"],
+      "responses": [
+        "**π (Pi)** es una constante matemática irracional, aproximadamente **3.14159265358979...**\n\nRepresenta la relación entre la circunferencia de un círculo y su diámetro:\n\nπ = Circunferencia ÷ Diámetro\n\nTiene infinitos decimales sin patrón repetitivo. Aparece en geometría, física, ingeniería y hasta en estadística. El 14 de marzo (3/14) se celebra el 'Día de Pi'.",
+        "Pi (π) es aproximadamente 3.14159... Es el cociente entre la circunferencia y el diámetro de cualquier círculo. Es irracional e infinito. Se usa en fórmulas como el área del círculo: A = π × r²"
+      ]
+    },
+
+    {
+      "tag": "pythagoras",
+      "patterns": ["pitagoras", "teorema de pitagoras", "hipotenusa", "catetos"],
+      "responses": [
+        "El **Teorema de Pitágoras** dice que en un triángulo rectángulo:\n\n**a² + b² = c²**\n\nDonde a y b son los catetos (los lados que forman el ángulo recto) y c es la hipotenusa (el lado más largo, opuesto al ángulo recto).\n\nEjemplo: si a = 3 y b = 4, entonces c = √(9+16) = √25 = **5**\n\nEste es el famoso triángulo 3-4-5, uno de los triángulos pitagóricos más conocidos."
+      ]
+    },
+
+    {
+      "tag": "programming_general",
+      "patterns": ["que es programacion", "aprender programacion", "como programar", "por donde empezar a programar"],
+      "responses": [
+        "La **programación** es el proceso de dar instrucciones precisas a una computadora para que realice tareas. Estas instrucciones se escriben en lenguajes de programación como Python, JavaScript o Java.\n\nPara empezar a programar:\n1. Elige un lenguaje (Python es ideal para principiantes)\n2. Aprende conceptos básicos: variables, condiciones, ciclos, funciones\n3. Practica resolviendo pequeños problemas\n4. Lee código de otros y trata de entenderlo\n5. Construye proyectos propios, aunque sean simples\n\nLa clave es la práctica constante. Nadie aprende a programar solo leyendo.",
+        "Programar es básicamente decirle a una computadora qué hacer, paso a paso, usando un lenguaje que ambos entienden. Conceptos fundamentales:\n\n• **Variables**: guardar datos (nombre = 'Juan')\n• **Condicionales**: tomar decisiones (si llueve, llevar paraguas)\n• **Ciclos**: repetir acciones (hacer algo 10 veces)\n• **Funciones**: agrupar instrucciones reutilizables\n\n¿Quieres empezar con algún lenguaje en particular?"
+      ]
+    },
+
+    {
+      "tag": "algorithm",
+      "patterns": ["que es un algoritmo", "algoritmo", "como funciona un algoritmo"],
+      "responses": [
+        "Un **algoritmo** es una secuencia finita y ordenada de pasos para resolver un problema o realizar una tarea.\n\nCaracterísticas de un buen algoritmo:\n• **Finito**: siempre termina\n• **Definido**: cada paso es claro y sin ambigüedad\n• **Efectivo**: produce el resultado correcto\n• **Entrada/Salida**: recibe datos y devuelve un resultado\n\nEjemplo cotidiano: la receta de una torta es un algoritmo. Tienes ingredientes (entrada), sigues pasos ordenados, y obtienes la torta (salida).\n\nEn programación, los algoritmos más comunes son de búsqueda, ordenamiento y recorrido de estructuras de datos."
+      ]
+    },
+
+    {
+      "tag": "python",
+      "patterns": ["python", "codigo python", "script python", "aprender python", "que es python"],
+      "responses": [
+        "**Python** es uno de los lenguajes de programación más populares y versátiles del mundo. Es conocido por su sintaxis limpia y legible.\n\nSe usa en:\n• Ciencia de datos e IA (NumPy, Pandas, TensorFlow)\n• Desarrollo web (Django, Flask)\n• Automatización de tareas\n• Scripts y herramientas\n\nEjemplo básico:\n```python\n# Función factorial\ndef factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))  # → 120\n```\n\n¿Quieres ver algo específico de Python?",
+        "Python es genial para empezar. Aquí un ejemplo de ciclo y lista:\n```python\nfrutas = ['manzana', 'pera', 'uva']\nfor fruta in frutas:\n    print(f'Me gusta la {fruta}')\n```\nSimple, legible, poderoso."
+      ]
+    },
+
+    {
+      "tag": "javascript",
+      "patterns": ["javascript", "js", "que es javascript", "aprender javascript", "codigo javascript"],
+      "responses": [
+        "**JavaScript** es el lenguaje de la web. Corre en el navegador y también en servidores (Node.js).\n\nEjemplo:\n```javascript\n// Función con arrow function\nconst saludar = (nombre) => `¡Hola, ${nombre}!`;\nconsole.log(saludar('Mundo')); // ¡Hola, Mundo!\n\n// Array y map\nconst nums = [1, 2, 3, 4];\nconst dobles = nums.map(n => n * 2);\nconsole.log(dobles); // [2, 4, 6, 8]\n```\n\nConceptos clave: DOM, eventos, promesas, async/await, APIs. ¿Sobre qué quieres profundizar?"
+      ]
+    },
+
+    {
+      "tag": "html_css",
+      "patterns": ["html", "css", "hacer pagina web", "pagina web", "que es html", "que es css"],
+      "responses": [
+        "**HTML** define la estructura de una página web. **CSS** la hace visualmente atractiva.\n\nEjemplo HTML básico:\n```html\n<!DOCTYPE html>\n<html>\n  <head>\n    <title>Mi página</title>\n  </head>\n  <body>\n    <h1>Hola, mundo</h1>\n    <p>Este es un párrafo.</p>\n  </body>\n</html>\n```\n\nCSS para estilizarlo:\n```css\nh1 {\n  color: #10b981;\n  font-size: 2rem;\n  font-family: sans-serif;\n}\n```\n\nJunto con JavaScript forman la triada del desarrollo web frontend.",
+        "HTML es el esqueleto de una página (estructura), CSS es la ropa (diseño), y JavaScript es el comportamiento (interactividad). Los tres trabajan juntos para crear experiencias web modernas."
+      ]
+    },
+
+    {
+      "tag": "sql",
+      "patterns": ["sql", "base de datos", "mysql", "postgresql", "consulta sql", "que es sql"],
+      "responses": [
+        "**SQL** (Structured Query Language) es el lenguaje estándar para gestionar bases de datos relacionales.\n\nComandos esenciales:\n```sql\n-- Seleccionar datos\nSELECT nombre, edad FROM usuarios WHERE edad > 18;\n\n-- Insertar\nINSERT INTO usuarios (nombre, edad) VALUES ('Ana', 25);\n\n-- Actualizar\nUPDATE usuarios SET edad = 26 WHERE nombre = 'Ana';\n\n-- Eliminar\nDELETE FROM usuarios WHERE nombre = 'Ana';\n```\n\nBases de datos populares: MySQL, PostgreSQL (relacionales), MongoDB (no relacional)."
+      ]
+    },
+
+    {
+      "tag": "git",
+      "patterns": ["git", "github", "control de versiones", "que es git", "comandos git"],
+      "responses": [
+        "**Git** es el sistema de control de versiones más usado. Permite registrar el historial de cambios de un proyecto y colaborar en equipo.\n\nComandos básicos:\n```bash\ngit init              # Iniciar repositorio\ngit add .             # Agregar todos los cambios\ngit commit -m 'Fix'   # Guardar cambio con mensaje\ngit push origin main  # Subir al repositorio remoto\ngit pull              # Descargar cambios remotos\ngit branch nueva      # Crear rama nueva\ngit merge nueva       # Fusionar rama\ngit log --oneline     # Ver historial compacto\n```\n\n**GitHub** es la plataforma más popular para alojar repositorios Git. También existen GitLab y Bitbucket."
+      ]
+    },
+
+    {
+      "tag": "haxe",
+      "patterns": ["haxe", "lenguaje haxe", "que es haxe", "haxeflixel"],
+      "responses": [
+        "**Haxe** es un lenguaje de programación de alto nivel, de tipado estático y multiplataforma. Su superpoder es que puedes escribir código una vez y compilarlo para múltiples plataformas:\n\n• HTML5 / JavaScript\n• C++ (Windows, Mac, Linux)\n• Android / iOS\n• Java, C#, Python\n\nEs muy popular en el desarrollo de videojuegos, especialmente con frameworks como **HaxeFlixel** (2D) o **Heaps.io**.\n\nEjemplo básico:\n```haxe\nclass Main {\n  static function main() {\n    trace('Hola desde Haxe!');\n  }\n}\n```\n\nSi haces mods de FNF o juegos 2D, Haxe es clave.",
+        "Haxe fue creado por Nicolas Cannasse. Es open source y permite compilar a distintas plataformas desde un solo código fuente. Muchos mods de Friday Night Funkin usan Haxe porque Psych Engine y el engine original están escritos en él."
+      ]
+    },
+
+    {
+      "tag": "fnf_modding",
+      "patterns": ["fnf mod", "fnf", "psych engine", "friday night funkin", "mod fnf", "modding fnf"],
+      "responses": [
+        "**Friday Night Funkin (FNF)** es un juego de ritmo open source. Su comunidad de modding es enorme.\n\nPasos básicos para hacer un mod:\n1. Descarga **Psych Engine** (el engine más usado para mods)\n2. Aprende la estructura de carpetas: `assets/`, `source/`\n3. Agrega tus canciones en formato `.ogg` con voces e instrumental separados\n4. Crea los charts con **Chart Editor** o **Psych's built-in editor**\n5. Agrega personajes con sus sprites y animaciones (XML + sprite sheet)\n6. Modifica o crea archivos `.hx` para comportamientos personalizados\n\nArchivos comunes que se editan:\n• `MainMenuState.hx` → menú principal\n• `PlayState.hx` → lógica del juego\n• `TitleState.hx` → pantalla de título",
+        "Para mods de FNF en Psych Engine, el flujo típico es: diseñar personajes en Adobe Animate o similar → exportar como sprite sheets → configurar los archivos JSON con las animaciones → crear o importar canciones → hacer el chart → ajustar código Haxe si necesitas comportamientos especiales."
+      ]
+    },
+
+    {
+      "tag": "minecraft_general",
+      "patterns": ["minecraft", "que es minecraft", "minecraft survival", "minecraft creativo"],
+      "responses": [
+        "**Minecraft** es un juego sandbox de mundo abierto creado por Mojang. Los jugadores pueden construir, explorar, sobrevivir y crear en un mundo generado proceduralmente con bloques.\n\nModos principales:\n• **Supervivencia**: recoges recursos, fabricas herramientas, combates mobs y construyes refugios\n• **Creativo**: tienes todos los bloques infinitos y vuelas libremente\n• **Aventura**: diseñado para mapas personalizados con reglas especiales\n• **Espectador**: solo observas el mundo sin interactuar\n\nVersiones principales:\n• **Java Edition**: PC, más mods, más personalizable\n• **Bedrock Edition**: multiplataforma (consolas, móvil, Windows)\n\n¿Sobre qué aspecto quieres saber más?",
+        "Minecraft es uno de los videojuegos más vendidos de la historia con más de 238 millones de copias. Su sistema de redstone permite crear circuitos lógicos dentro del juego, lo que lleva a los jugadores a construir computadoras funcionales, puertas automáticas y mucho más."
+      ]
+    },
+
+    {
+      "tag": "minecraft_commands",
+      "patterns": ["execute minecraft", "comando execute", "comandos minecraft", "command blocks", "comandos en minecraft"],
+      "responses": [
+        "Los **comandos de Minecraft** son instrucciones que puedes ejecutar en el chat (con `/`) o en bloques de comandos.\n\nComandos esenciales:\n```\n/give @p diamond 64        → dar 64 diamantes al jugador más cercano\n/tp @p 100 64 200          → teletransportar al jugador\n/time set day              → cambiar la hora a día\n/gamemode creative @s      → cambiar tu modo de juego\n/kill @e[type=zombie]      → eliminar todos los zombies\n/fill x1 y1 z1 x2 y2 z2 stone  → llenar área con piedra\n```\n\nEl comando **execute** es el más poderoso:\n```\nexecute as @a at @s if block ~ ~-1 ~ grass_block run say Estás en césped\n```\nEjecuta un comando condicional basado en entidades, posición o bloques.",
+        "Los **command blocks** en Minecraft te permiten automatizar comandos. Son especialmente útiles en mapas de aventura o minijuegos. Se configuran en modo Impulso (una vez), Repetición (cada tick) o Cadena (en secuencia)."
+      ]
+    },
+
+    {
+      "tag": "music_production",
+      "patterns": ["fl studio", "hacer musica", "producir musica", "daw", "produccion musical", "que es fl studio"],
+      "responses": [
+        "**FL Studio** (antes Fruity Loops) es uno de los DAW (Digital Audio Workstation) más populares del mundo, desarrollado por Image-Line.\n\nConceptos básicos de producción musical:\n• **BPM**: velocidad del tema (beats por minuto). Trap: 130-145, House: 120-130\n• **Pattern**: bloque de notas o beats que se repiten\n• **Mixer**: controla el volumen y efectos de cada canal\n• **Piano Roll**: editor donde dibujas las notas musicales\n• **Playlist**: organiza los patterns en el tiempo\n\nEstructura típica de una canción:\n1. Intro → 2. Verso → 3. Pre-coro → 4. Coro → 5. Puente → 6. Outro\n\nPlugins clave: Serum (síntesis), Nexus (sonidos), Kontakt (samples), FPC (drums).",
+        "Para empezar en FL Studio: aprende a usar el paso de batería (Step Sequencer) para hacer ritmos básicos, luego usa el Piano Roll para melodías, y finalmente el Mixer para balancear y agregar efectos. La teoría musical ayuda mucho, aunque no es obligatoria al inicio."
+      ]
+    },
+
+    {
+      "tag": "ai_general",
+      "patterns": ["que es la inteligencia artificial", "inteligencia artificial", "como funciona la ia", "machine learning", "deep learning"],
+      "responses": [
+        "La **Inteligencia Artificial (IA)** es la capacidad de las máquinas para realizar tareas que normalmente requieren inteligencia humana: reconocer imágenes, entender texto, tomar decisiones, etc.\n\nRamas principales:\n\n• **Machine Learning (ML)**: el sistema aprende de datos sin ser programado explícitamente. Más datos = mejor rendimiento.\n• **Deep Learning**: ML con redes neuronales profundas (muchas capas). Ideal para imágenes, voz y texto.\n• **NLP** (Procesamiento de Lenguaje Natural): permite a las máquinas entender y generar texto humano. Es lo que usa un chatbot como yo.\n• **Computer Vision**: las máquinas pueden 'ver' e interpretar imágenes.\n\nHerramientas populares: TensorFlow, PyTorch, scikit-learn (Python).\n¿Quieres profundizar en alguna rama?",
+        "La IA moderna funciona mayormente con redes neuronales artificiales entrenadas con enormes cantidades de datos. Por ejemplo, los modelos de lenguaje como GPT se entrenaron leyendo gran parte de internet para aprender patrones del lenguaje humano."
+      ]
+    },
+
+    {
+      "tag": "internet",
+      "patterns": ["como funciona internet", "que es internet", "que es la web", "como funciona la web"],
+      "responses": [
+        "**Internet** es una red global de computadoras interconectadas que se comunican usando el protocolo TCP/IP.\n\nCómo funciona paso a paso cuando abres una web:\n1. Escribes una URL (ej: google.com)\n2. Tu computadora consulta un servidor **DNS** para saber la IP real\n3. Tu dispositivo envía una petición HTTP/HTTPS al servidor\n4. La petición viaja por routers, cables de fibra óptica (y cables submarinos)\n5. El servidor responde con el HTML, CSS y JS de la página\n6. Tu navegador interpreta ese código y muestra la página\n\nLa **Web (WWW)** es solo una parte de internet. También existen email, torrents, VoIP, etc."
+      ]
+    },
+
+    {
+      "tag": "gravity",
+      "patterns": ["que es la gravedad", "gravedad", "como funciona la gravedad", "fuerza de gravedad"],
+      "responses": [
+        "La **gravedad** es una de las cuatro fuerzas fundamentales del universo. Es la atracción que existe entre todos los objetos que tienen masa.\n\n**Newton** la describió con:\nF = G × (m₁ × m₂) / r²\n\nDonde G es la constante gravitacional, m₁ y m₂ son las masas, y r es la distancia entre ellas.\n\n**Einstein** la redefinió en la Relatividad General: la gravedad no es una 'fuerza' sino la curvatura del espacio-tiempo causada por la masa. Un objeto masivo dobla el tejido del espacio-tiempo y otros objetos siguen esa curvatura.\n\nSin gravedad: no habría planetas, estrellas, ni galaxias. Todo sería gas disperso en el universo."
+      ]
+    },
+
+    {
+      "tag": "dna",
+      "patterns": ["que es el adn", "adn", "dna", "genetica", "que es un gen", "genes"],
+      "responses": [
+        "El **ADN** (Ácido Desoxirribonucleico) es la molécula que contiene las instrucciones genéticas de todos los seres vivos.\n\nDatos clave:\n• Tiene forma de **doble hélice** (descubierta por Watson y Crick en 1953)\n• Está formado por 4 bases: **Adenina (A), Timina (T), Citosina (C) y Guanina (G)**\n• El genoma humano tiene aproximadamente **3,000 millones de pares de bases**\n• Cada célula humana tiene ~2 metros de ADN comprimido\n• Los **genes** son segmentos de ADN que codifican proteínas\n• Tienes ~20,000 genes, que representan solo el ~2% de tu ADN total\n\nEl Proyecto Genoma Humano se completó en 2003 y secuenció todo el genoma humano."
+      ]
+    },
+
+    {
+      "tag": "photosynthesis",
+      "patterns": ["fotosintesis", "que es la fotosintesis", "como hacen energia las plantas"],
+      "responses": [
+        "La **fotosíntesis** es el proceso por el cual las plantas, algas y algunas bacterias convierten la luz solar en energía química almacenada como glucosa.\n\nEcuación general:\n**6CO₂ + 6H₂O + luz → C₆H₁₂O₆ (glucosa) + 6O₂**\n\nOcurre en los **cloroplastos**, orgánulos que contienen **clorofila** (el pigmento verde).\n\nFases:\n1. **Fase lumínica**: la luz divide el agua y libera oxígeno\n2. **Fase oscura (Ciclo de Calvin)**: se usa CO₂ para producir glucosa\n\nImportancia: produce el oxígeno que respiramos y es la base de toda la cadena alimentaria. Sin fotosíntesis, casi toda la vida en la Tierra no existiría."
+      ]
+    },
+
+    {
+      "tag": "solar_system",
+      "patterns": ["sistema solar", "planetas", "cuantos planetas hay", "planeta mas grande", "el sol"],
+      "responses": [
+        "El **Sistema Solar** tiene **8 planetas** que orbitan alrededor del Sol:\n\n🌑 **Mercurio** - el más pequeño y más cercano al Sol. Un día dura 59 días terrestres.\n🌕 **Venus** - el más caliente (462°C). Rotación retrógrada.\n🌍 **Tierra** - el único con vida confirmada. Tiene un satélite: la Luna.\n🔴 **Marte** - el planeta rojo. Tiene los volcanes más grandes del sistema solar.\n🟡 **Júpiter** - el más grande. La Gran Mancha Roja es una tormenta de 300 años.\n🪐 **Saturno** - famoso por sus anillos de hielo y roca.\n🔵 **Urano** - rota de lado, como rodando. Es el más frío.\n🔵 **Neptuno** - el más lejano. Vientos de hasta 2,100 km/h.\n\nPlutón fue reclasificado como planeta enano en 2006 por la UAI."
+      ]
+    },
+
+    {
+      "tag": "atom",
+      "patterns": ["que es un atomo", "atomo", "electron", "proton", "neutron", "tabla periodica"],
+      "responses": [
+        "El **átomo** es la unidad básica de la materia. Todo lo que existe está hecho de átomos.\n\nEstructura:\n• **Núcleo**: contiene protones (+) y neutrones (sin carga)\n• **Electrones** (-): orbitan el núcleo en capas o niveles de energía\n\nDatos clave:\n• El número de protones define el **elemento** (número atómico)\n• 1 protón = Hidrógeno, 6 = Carbono, 26 = Hierro, 79 = Oro\n• La **Tabla Periódica** organiza los 118 elementos conocidos\n• Los átomos son increíblemente pequeños: un cabello humano tiene ~1 millón de átomos de grosor\n• El 99.9% del átomo es espacio vacío\n\n¿Quieres saber sobre algún elemento en específico?"
+      ]
+    },
+
+    {
+      "tag": "black_hole",
+      "patterns": ["agujero negro", "que es un agujero negro", "como funciona un agujero negro"],
+      "responses": [
+        "Un **agujero negro** es una región del espacio donde la gravedad es tan extrema que nada puede escapar de ella, ni siquiera la luz.\n\nCómo se forman:\n• Estrellas masivas (más de 20 veces el Sol) que explotan en supernovas\n• El núcleo colapsa hasta volverse infinitamente denso: una **singularidad**\n\nPartes:\n• **Singularidad**: el centro de densidad infinita\n• **Horizonte de eventos**: el punto de no retorno. Si cruzas esta frontera, ya no puedes escapar\n• **Radio de Schwarzschild**: el tamaño del horizonte de eventos\n\nDatos curiosos:\n• El tiempo se ralentiza cerca de un agujero negro (dilatación temporal)\n• El agujero negro más cercano a la Tierra está a ~1,000 años luz\n• En 2019 se tomó la primera fotografía de un agujero negro (M87*)"
+      ]
+    },
+
+    {
+      "tag": "history_mexico",
+      "patterns": ["historia de mexico", "independencia de mexico", "revolucion mexicana", "aztecas"],
+      "responses": [
+        "La historia de México tiene varias etapas clave:\n\n🏛️ **Prehispánica**: grandes civilizaciones como los **Mayas** (astronomía y escritura), los **Aztecas** (Tenochtitlán) y los Olmecas.\n\n⚔️ **Conquista española** (1519-1521): Hernán Cortés llegó y derrotó al Imperio Azteca con alianzas y enfermedades. Comenzó el Virreinato.\n\n🔔 **Independencia** (1810-1821): Miguel Hidalgo inició el movimiento con el Grito de Dolores el 16 de septiembre de 1810. Se consumó en 1821 con Agustín de Iturbide.\n\n⚡ **Revolución Mexicana** (1910-1920): contra la dictadura de Porfirio Díaz. Líderes como Emiliano Zapata y Pancho Villa. Resultó en la Constitución de 1917.\n\n¿Quieres profundizar en alguna etapa?",
+        "Los aztecas fundaron Tenochtitlán (hoy Ciudad de México) en 1325 en una isla en el lago Texcoco. Construyeron una de las ciudades más grandes del mundo en su época, con acueductos, pirámides y mercados enormes."
+      ]
+    },
+
+    {
+      "tag": "history_world",
+      "patterns": ["segunda guerra mundial", "primera guerra mundial", "revolucion francesa", "guerra fria", "historia universal"],
+      "responses": [
+        "La **Segunda Guerra Mundial** (1939–1945) fue el conflicto más devastador de la historia humana.\n\n• **Causas**: ascenso del nazismo en Alemania, expansionismo japonés, crisis económica post-WWI\n• **Bandos**: Aliados (EE.UU., URSS, UK, Francia) vs Eje (Alemania, Italia, Japón)\n• **Eventos clave**: invasión de Polonia, el Holocausto, Batalla de Stalingrado, Día D, bombas atómicas en Hiroshima y Nagasaki\n• **Resultado**: derrota del Eje, ~70-85 millones de muertos, inicio de la Guerra Fría\n• **Consecuencias**: creación de la ONU, Plan Marshall, división de Alemania, inicio de la era nuclear",
+        "La **Guerra Fría** (1947-1991) fue la tensión geopolítica entre EE.UU. (capitalismo) y la URSS (comunismo). Nunca hubo combate directo entre ellos, pero sí guerras por delegación (Corea, Vietnam), la carrera espacial, la carrera armamentista nuclear y el Muro de Berlín. Terminó con la disolución de la URSS en 1991."
+      ]
+    },
+
+    {
+      "tag": "geography",
+      "patterns": ["donde esta mexico", "continentes", "paises del mundo", "capital de", "que pais es"],
+      "responses": [
+        "El mundo tiene **7 continentes**:\n\n🌎 **América del Norte**: EE.UU., México, Canadá, países centroamericanos\n🌎 **América del Sur**: Brasil, Argentina, Colombia, Chile, Perú...\n🌍 **Europa**: Francia, Alemania, España, Italia, Reino Unido...\n🌍 **África**: Nigeria, Etiopía, Sudáfrica, Egipto, Marruecos...\n🌏 **Asia**: China, India, Japón, Corea del Sur, Rusia (parte)...\n🌏 **Oceanía**: Australia, Nueva Zelanda, islas del Pacífico\n❄️ **Antártida**: no tiene países, es territorio de investigación científica\n\n¿Buscas información sobre algún país o región en específico?",
+        "México está ubicado en América del Norte. Limita al norte con Estados Unidos, al sur con Guatemala y Belice, al este con el Golfo de México y el Mar Caribe, y al oeste con el Océano Pacífico. Tiene 32 estados y su capital es Ciudad de México."
+      ]
+    },
+
+    {
+      "tag": "social_advice",
+      "patterns": ["como le digo", "como responderle", "que le digo", "como hablar con alguien", "como decirle"],
+      "responses": [
+        "En situaciones sociales, lo más efectivo suele ser:\n\n1. **Sé directo pero amable**: decir lo que piensas con claridad evita malentendidos\n2. **Usa 'yo' en lugar de 'tú'**: 'Yo me sentí ignorado' en vez de 'Tú me ignoraste'. Reduce la actitud defensiva del otro.\n3. **Escucha activamente**: a veces la gente solo necesita sentirse escuchada\n4. **Elige el momento**: no hables de algo importante cuando la otra persona está estresada o distraída\n5. **Sé específico**: en lugar de 'siempre haces eso', di exactamente qué pasó y cómo te afectó\n\n¿Puedes contarme más sobre la situación? Así puedo darte un consejo más concreto.",
+        "Comunicarse bien es una habilidad que se aprende. Lo fundamental: habla desde tus emociones y necesidades, no desde el ataque o la acusación. Y si no sabes qué decir, a veces un simple 'necesito hablar contigo, ¿cuándo tienes tiempo?' funciona mejor que improvisar."
+      ]
+    },
+
+    {
+      "tag": "productivity",
+      "patterns": ["como ser mas productivo", "productividad", "consejos productividad", "dejar de procrastinar", "motivacion"],
+      "responses": [
+        "Consejos de productividad basados en psicología y neurociencia:\n\n🍅 **Técnica Pomodoro**: trabaja 25 min enfocado, descansa 5. Después de 4 ciclos, descanso largo de 15-30 min.\n\n📋 **Regla de los 2 minutos**: si algo toma menos de 2 minutos, hazlo de inmediato.\n\n🎯 **Prioriza con el método 1-3-5**: cada día elige 1 tarea grande, 3 medianas y 5 pequeñas.\n\n📵 **Bloquea distracciones**: silencia notificaciones, usa apps como Focus Mode o Forest.\n\n🧠 **Trabaja con tu energía**: identifica tu pico de productividad (mañana o tarde) y programa las tareas más difíciles ahí.\n\n😴 **Duerme bien**: la falta de sueño destruye la concentración y la toma de decisiones.\n\n¿Cuál es tu mayor obstáculo para ser productivo?"
+      ]
+    },
+
+    {
+      "tag": "study_tips",
+      "patterns": ["como estudiar mejor", "tecnicas de estudio", "como aprender mas rapido", "memorizar", "concentracion"],
+      "responses": [
+        "Las técnicas de estudio más efectivas según la ciencia cognitiva:\n\n🔁 **Repetición espaciada**: repasar el material en intervalos crecientes (hoy, mañana, en 3 días, en 1 semana). Usa Anki.\n\n🧪 **Recuperación activa**: hacerse preguntas en lugar de solo releer. Los tests te hacen aprender más.\n\n🗣️ **Técnica Feynman**: explica el concepto como si lo enseñaras a alguien que no sabe nada del tema. Donde no puedas explicar, ahí está tu brecha.\n\n🔀 **Intercalación**: mezcla temas o tipos de problemas en lugar de estudiar uno solo por horas.\n\n📵 **Deep Work**: estudia en bloques de enfoque profundo sin interrupciones. Nada de redes sociales.\n\n✏️ **Toma notas a mano**: escribir a mano procesa la información más profundamente que tipear.",
+        "El mayor mito del estudio es que releer es estudiar. La memoria se fortalece recuperando información, no simplemente exponiéndose a ella. El esfuerzo de recordar algo es lo que consolida el aprendizaje."
+      ]
+    },
+
+    {
+      "tag": "health",
+      "patterns": ["salud", "hacer ejercicio", "dormir mejor", "alimentacion", "habitos saludables"],
+      "responses": [
+        "Hábitos de salud fundamentales respaldados por ciencia:\n\n😴 **Sueño**: 7-9 horas es lo óptimo para adultos. Mantén horarios regulares y evita pantallas 1h antes de dormir.\n\n🏃 **Ejercicio**: 150 min/semana de actividad moderada (caminar rápido, bicicleta) o 75 min de intensa. La fuerza muscular también importa.\n\n🥗 **Alimentación**: más vegetales, frutas, proteínas magras y grasas saludables (aguacate, nueces, aceite de oliva). Menos ultraprocesados y azúcar.\n\n💧 **Hidratación**: ~2 litros de agua al día, más si haces ejercicio.\n\n🧘 **Estrés**: meditación, respiración diafragmática y tiempo en naturaleza reducen el cortisol.\n\n🤝 **Relaciones sociales**: tener vínculos sociales sólidos es uno de los predictores más fuertes de longevidad."
+      ]
+    },
+
+    {
+      "tag": "mental_health",
+      "patterns": ["depresion", "ansiedad", "salud mental", "me siento mal", "tristeza", "estres"],
+      "responses": [
+        "La salud mental es tan importante como la física, aunque a veces se le da menos atención.\n\nAlgunos datos:\n• La depresión afecta a más de 280 millones de personas en el mundo\n• La ansiedad es el trastorno mental más común\n• Buscar ayuda profesional es una señal de fortaleza, no debilidad\n\nCosas que pueden ayudar:\n• Hablar con alguien de confianza\n• Mantener rutinas básicas (dormir, comer, moverse)\n• Reducir el consumo de redes sociales y noticias\n• Hacer ejercicio físico (libera endorfinas y reduce cortisol)\n• Meditar o practicar respiración consciente\n\nSi estás pasando por un momento muy difícil, hablar con un psicólogo puede marcar una diferencia enorme. No tienes que estar 'muy mal' para pedir ayuda. 💙\n\n¿Hay algo específico que quieras hablar?",
+        "Sentirse mal emocionalmente no es una debilidad ni algo que 'se arregla solo ignorándolo'. Si lo que sientes interfiere con tu vida diaria, buscar apoyo profesional es lo más inteligente que puedes hacer. ¿Cómo te has sentido últimamente?"
+      ]
+    },
+
+    {
+      "tag": "philosophy",
+      "patterns": ["que es la filosofia", "filosofia", "socrates", "platon", "aristoteles", "nietzsche", "descartes"],
+      "responses": [
+        "La **filosofía** (del griego 'amor a la sabiduría') estudia preguntas fundamentales sobre la existencia, el conocimiento, la moral y la realidad.\n\nRamas principales:\n• **Metafísica**: ¿qué es la realidad? ¿existe el libre albedrío?\n• **Epistemología**: ¿cómo sabemos lo que sabemos?\n• **Ética**: ¿qué está bien y qué está mal?\n• **Lógica**: ¿cómo razonamos correctamente?\n• **Estética**: ¿qué es la belleza?\n\nFilósofos clave:\n• **Sócrates**: 'Solo sé que no sé nada'. Método socrático.\n• **Platón**: teoría de las ideas, la caverna\n• **Aristóteles**: lógica, ética, biología\n• **Descartes**: 'Cogito ergo sum' (Pienso, luego existo)\n• **Nietzsche**: voluntad de poder, el superhombre, 'Dios ha muerto'\n• **Kant**: imperativo categórico, crítica de la razón pura",
+        "La filosofía no solo es abstracta. Nos enseña a pensar con claridad, cuestionar supuestos y tomar mejores decisiones. ¿Sobre qué filósofo o corriente quieres saber más?"
+      ]
+    },
+
+    {
+      "tag": "meaning_of_life",
+      "patterns": ["sentido de la vida", "para que vivimos", "cual es el proposito de la vida"],
+      "responses": [
+        "Una de las preguntas más antiguas y profundas. Distintas perspectivas:\n\n🤔 **Existencialismo** (Sartre, Camus): 'La existencia precede a la esencia'. No hay un significado predefinido. Tú lo creas.\n\n😊 **Hedonismo**: el propósito es buscar el placer y evitar el dolor.\n\n⚖️ **Estoicismo**: vivir con virtud, razón y en armonía con la naturaleza.\n\n❤️ **Viktor Frankl** (logoterapia): el sentido se encuentra incluso en el sufrimiento. Emerge del amor, el trabajo significativo y el significado personal.\n\n🧬 **Biología evolutiva**: desde esta visión, el 'propósito' es sobrevivir y reproducirse. Pero los humanos podemos trascender eso.\n\nNo hay una respuesta universal. Quizás la búsqueda misma es lo que le da riqueza a la vida. ¿Qué respuesta te convence más?"
+      ]
+    },
+
+    {
+      "tag": "movies",
+      "patterns": ["peliculas recomendadas", "que ver", "buenas peliculas", "series recomendadas", "que pelicula ver"],
+      "responses": [
+        "Películas imprescindibles por género:\n\n🎭 **Drama**: El Padrino, Parásitos, La Lista de Schindler, Boyhood\n🔬 **Sci-Fi**: Interstellar, Blade Runner 2049, La llegada, Ex Machina\n😂 **Comedia**: La vida de Brian, Superbad, Entre copas\n🎬 **Animación**: Spirited Away, WALL-E, Spider-Man: Into the Spider-Verse\n😱 **Thriller**: Memento, El Silencio de los Inocentes, Oldboy, Gone Girl\n🦸 **Acción**: Mad Max: Fury Road, John Wick, Top Gun: Maverick\n\nSeries destacadas: Breaking Bad, Chernobyl, Dark, The Wire, Severance\n\n¿Tienes algún género favorito o algo que hayas disfrutado antes? Te doy una recomendación más precisa."
+      ]
+    },
+
+    {
+      "tag": "music",
+      "patterns": ["musica recomendada", "artistas recomendados", "que escuchar", "generos musicales"],
+      "responses": [
+        "Artistas y géneros para explorar:\n\n🎸 **Rock**: The Beatles, Led Zeppelin, Radiohead, Foo Fighters, Arctic Monkeys\n🎵 **Pop**: Michael Jackson, The Weeknd, Billie Eilish, Frank Ocean\n🎷 **Jazz**: Miles Davis, John Coltrane, Thelonious Monk\n🎻 **Clásica**: Beethoven, Bach, Mozart, Chopin, Debussy\n🔊 **Electrónica**: Daft Punk, Aphex Twin, Four Tet, Bonobo\n🎤 **Hip-hop**: Kendrick Lamar, J. Cole, Tyler the Creator, Mac Miller\n🎺 **Latin**: Bad Bunny, Caetano Veloso, Calle 13, Natalia Lafourcade\n\n¿Qué estilo escuchas normalmente? Te recomiendo algo más personalizado."
+      ]
+    },
+
+    {
+      "tag": "books",
+      "patterns": ["libros recomendados", "que leer", "buenos libros", "novela recomendada"],
+      "responses": [
+        "Libros imprescindibles por categoría:\n\n📚 **Novela clásica**: Cien años de soledad, El Quijote, Crimen y Castigo, 1984, El Gran Gatsby\n🌙 **Fantasía/SciFi**: El Señor de los Anillos, Dune, La Guía del Autoestopista Galáctico\n🧪 **Ciencia popular**: Sapiens (Harari), El Gen Egoísta (Dawkins), Cosmos (Carl Sagan)\n🧠 **Psicología**: Pensar Rápido Pensar Despacio, El Poder del Ahora, El Hombre en Busca de Sentido\n💡 **Negocios/Hábitos**: Atomic Habits, Zero to One, El Libro Negro del Emprendedor\n🕵️ **Thriller/Misterio**: Millennium, Sherlock Holmes, La Chica del Tren, Agatha Christie\n\n¿Sobre qué temas te gusta leer?"
+      ]
+    },
+
+    {
+      "tag": "travel",
+      "patterns": ["viajar", "destinos viaje", "a donde viajar", "turismo", "viajes recomendados"],
+      "responses": [
+        "Destinos increíbles según el tipo de viajero:\n\n🏔️ **Aventura/Naturaleza**: Patagonia (Chile/Argentina), Islandia, Costa Rica, Nueva Zelanda\n🏛️ **Historia/Cultura**: Japón, Italia (Roma, Florencia), Marruecos, Grecia, Perú (Machu Picchu)\n🏖️ **Playa y relax**: Tailandia, Maldivas, Caribe mexicano (Tulum), Bali\n💰 **Economicos**: Vietnam, Colombia, Portugal, Georgia, México\n🌆 **Ciudades vibrantes**: Ciudad de México, Tokio, Nueva York, Barcelona, São Paulo\n\n¿Tienes presupuesto estimado, tiempo disponible o algún tipo de experiencia en mente? Con eso puedo recomendarte algo más específico."
+      ]
+    },
+
+    {
+      "tag": "computer_problems",
+      "patterns": ["mi computadora no prende", "problema pc", "computadora lenta", "virus computadora", "formato pc"],
+      "responses": [
+        "Problemas comunes de PC y cómo solucionarlos:\n\n**No enciende**:\n• Verifica el cable de alimentación y el interruptor de la fuente\n• Revisa si el botón de encendido tiene conexión a la placa madre\n• Prueba con otra toma de corriente\n\n**Va lenta**:\n• Cierra programas que no uses\n• Revisa el administrador de tareas (Ctrl+Shift+Esc) para ver qué consume más\n• Agrega más RAM o cambia a SSD si el disco es HDD\n• Limpia archivos temporales: %temp% en el Ejecutar (Win+R)\n\n**Posible virus**:\n• Escanea con Windows Defender o Malwarebytes\n• Evita descargar de sitios no oficiales\n• Actualiza el sistema y antivirus\n\n¿Cuál es el problema exacto que tienes?"
+      ]
+    },
+
+    {
+      "tag": "fallback",
+      "patterns": [],
+      "responses": [
+        "Hmm, no tengo información específica sobre eso en mi base de conocimiento actual. Soy v1, así que aún tengo limitaciones. ¿Puedes darme más contexto o reformular la pregunta?",
+        "No estoy 100% seguro de la respuesta a eso. Si me das más detalles, intento ayudarte desde otro ángulo.",
+        "Eso está un poco fuera de lo que tengo documentado por ahora. Puedo ayudarte mejor con temas de programación, ciencia, matemáticas, historia o cultura. ¿Hay algo de eso que te interese?"
+      ]
+    }
+
+  ]
+}
