@@ -1,156 +1,434 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Chat Pro Max</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AJ-GPT v1</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300;400;500&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0d0d0d; --surface: #161616; --surface2: #1e1e1e; --border: #2a2a2a;
+    --accent: #10b981; --text: #f0f0f0; --muted: #6b7280;
+    --user-bubble: #1a2e22; --user-border: #10b981;
+    --font: 'Sora', sans-serif; --mono: 'Geist Mono', monospace;
+  }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font); overflow: hidden; }
+  .app { display: flex; height: 100vh; }
+  .sidebar { width: 256px; min-width: 256px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+  .sidebar-header { padding: 18px 16px 12px; border-bottom: 1px solid var(--border); }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-mark { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, #10b981, #059669); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-weight: 500; font-size: 12px; color: #fff; box-shadow: 0 0 16px rgba(16,185,129,.3); flex-shrink: 0; }
+  .logo-text { font-size: 15px; font-weight: 600; }
+  .logo-ver { font-family: var(--mono); font-size: 10px; color: var(--accent); }
+  .new-btn { margin: 12px 12px 4px; padding: 9px 14px; background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--text); font-family: var(--font); font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all .2s; width: calc(100% - 24px); }
+  .new-btn:hover { background: var(--surface2); border-color: var(--accent); }
+  .sidebar-label { padding: 12px 16px 4px; font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; }
+  .history { flex: 1; overflow-y: auto; padding: 0 8px 8px; }
+  .h-item { padding: 8px 10px; border-radius: 7px; font-size: 13px; color: #999; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all .15s; }
+  .h-item:hover { background: var(--surface2); color: var(--text); }
+  .h-item.active { background: #1a2e22; color: var(--accent); }
+  .sidebar-foot { padding: 12px 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); font-family: var(--mono); }
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+  .topbar { padding: 13px 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; background: var(--surface); flex-shrink: 0; }
+  .topbar-l { display: flex; align-items: center; gap: 10px; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.3} }
+  .model-tag { font-family: var(--mono); font-size: 11px; color: var(--accent); background: #0d2518; padding: 3px 8px; border-radius: 4px; border: 1px solid #10b98130; }
+  .topbar-title { font-size: 14px; font-weight: 500; color: #aaa; }
+  .msgs-wrap { flex: 1; overflow-y: auto; scroll-behavior: smooth; }
+  .msgs-inner { max-width: 740px; margin: 0 auto; padding: 28px 22px; display: flex; flex-direction: column; gap: 4px; }
+  .welcome { text-align: center; padding: 48px 16px 32px; }
+  .welcome h2 { font-size: 26px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 8px; }
+  .welcome h2 span { color: var(--accent); }
+  .welcome p { color: var(--muted); font-size: 13.5px; margin-bottom: 28px; line-height: 1.65; }
+  .suggestions { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; max-width: 520px; margin: 0 auto; }
+  .sug-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 13px 15px; cursor: pointer; text-align: left; transition: all .2s; }
+  .sug-card:hover { border-color: var(--accent); background: var(--user-bubble); transform: translateY(-1px); }
+  .sug-card .icon { font-size: 17px; margin-bottom: 5px; }
+  .sug-card .title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .sug-card .sub { font-size: 11px; color: var(--muted); }
+  .row { display: flex; gap: 12px; padding: 8px 0; animation: up .22s ease both; }
+  @keyframes up { from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none} }
+  .row.user { flex-direction: row-reverse; }
+  .avatar { width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 11px; font-family: var(--mono); }
+  .avatar.ai { background: linear-gradient(135deg, #10b981, #059669); color: #fff; }
+  .avatar.user { background: #1e3a2a; color: var(--accent); border: 1px solid var(--user-border); }
+  .bubble { max-width: 78%; padding: 11px 15px; border-radius: 12px; font-size: 13.5px; line-height: 1.72; word-break: break-word; }
+  .bubble.ai { background: var(--surface); border: 1px solid var(--border); border-top-left-radius: 3px; }
+  .bubble.user { background: var(--user-bubble); border: 1px solid var(--user-border); border-top-right-radius: 3px; }
+  .bubble strong { color: var(--accent); font-weight: 600; }
+  .bubble em { color: #a3e6cc; font-style: italic; }
+  .bubble pre { background: #0a0a0a; border: 1px solid var(--border); border-radius: 8px; padding: 13px; margin: 10px 0; overflow-x: auto; }
+  .bubble pre code { font-family: var(--mono); font-size: 12px; color: #34d399; line-height: 1.6; }
+  .bubble code { font-family: var(--mono); background: #0f0f0f; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #34d399; }
+  .typing-row { display: flex; gap: 12px; padding: 8px 0; }
+  .typing-bub { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; border-top-left-radius: 3px; padding: 13px 16px; display: flex; gap: 5px; align-items: center; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: boun .85s infinite; }
+  .dot:nth-child(2){animation-delay:.14s}.dot:nth-child(3){animation-delay:.28s}
+  @keyframes boun { 0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)} }
+  .input-area { flex-shrink: 0; padding: 14px 22px 18px; background: var(--surface); border-top: 1px solid var(--border); }
+  .input-box { max-width: 740px; margin: 0 auto; background: var(--bg); border: 1px solid var(--border); border-radius: 13px; display: flex; align-items: flex-end; transition: border-color .2s, box-shadow .2s; }
+  .input-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(16,185,129,.1); }
+  textarea { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: var(--font); font-size: 13.5px; padding: 13px 14px; resize: none; line-height: 1.6; max-height: 150px; min-height: 48px; }
+  textarea::placeholder { color: var(--muted); }
+  .send-btn { width: 36px; height: 36px; margin: 7px 7px 7px 0; border: none; border-radius: 8px; background: linear-gradient(135deg, #10b981, #059669); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .2s; box-shadow: 0 0 10px rgba(16,185,129,.22); }
+  .send-btn:hover { transform: scale(1.06); box-shadow: 0 0 18px rgba(16,185,129,.4); }
+  .send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; box-shadow: none; }
+  .input-hint { max-width: 740px; margin: 6px auto 0; font-size: 10.5px; color: var(--muted); text-align: center; font-family: var(--mono); }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  @media (max-width: 600px) { .sidebar { display: none; } .suggestions { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
-    <div id="root"></div>
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-mark">AJ</div>
+        <div><div class="logo-text">AJ-GPT</div><div class="logo-ver">v1.0 · AJ-1 local</div></div>
+      </div>
+    </div>
+    <button class="new-btn" onclick="newChat()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Nueva conversación
+    </button>
+    <div class="sidebar-label">Recientes</div>
+    <div class="history" id="hist"></div>
+    <div class="sidebar-foot">AJ-GPT · Modelo AJ-1 v1.0</div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="topbar-l">
+        <div class="status-dot"></div>
+        <span class="topbar-title">AJ-GPT</span>
+        <span class="model-tag">AJ-1 local</span>
+      </div>
+    </div>
+    <div class="msgs-wrap" id="wrap">
+      <div class="msgs-inner" id="msgs">
+        <div id="ws">
+          <div class="welcome">
+            <h2>Hola, soy <span>AJ-GPT</span> ✦</h2>
+            <p>Tu asistente inteligente. Pregúntame sobre programación, ciencia,<br>matemáticas, historia, cultura o simplemente conversa.</p>
+            <div class="suggestions">
+              <div class="sug-card" onclick="suggest('¿Cómo funciona la inteligencia artificial?')"><div class="icon">🤖</div><div class="title">¿Cómo funciona la IA?</div><div class="sub">Explícame lo básico</div></div>
+              <div class="sug-card" onclick="suggest('¿Cuánto es 128 * 37 + 56?')"><div class="icon">🧮</div><div class="title">Calcula algo</div><div class="sub">128 × 37 + 56 = ?</div></div>
+              <div class="sug-card" onclick="suggest('¿Qué es un algoritmo?')"><div class="icon">💻</div><div class="title">Define un concepto</div><div class="sub">¿Qué es un algoritmo?</div></div>
+              <div class="sug-card" onclick="suggest('Dame consejos para estudiar mejor')"><div class="icon">📚</div><div class="title">Técnicas de estudio</div><div class="sub">Aprende más rápido</div></div>
+              <div class="sug-card" onclick="suggest('¿Cuáles son los planetas del sistema solar?')"><div class="icon">🪐</div><div class="title">Sistema Solar</div><div class="sub">Los 8 planetas</div></div>
+              <div class="sug-card" onclick="suggest('Cuéntame un chiste')"><div class="icon">😄</div><div class="title">Un chiste</div><div class="sub">Algo gracioso</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="input-area">
+      <div class="input-box">
+        <textarea id="inp" placeholder="Escribe un mensaje..." rows="1" onkeydown="onKey(event)" oninput="resize(this)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="send()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">AJ-GPT v1 · Modelo local AJ-1 · Puede cometer errores</div>
+    </div>
+  </main>
+</div>
 
-    <script type="text/babel">
-        const { useState, useRef, useEffect } = React;
+<script>
+// ══════════════════════════════════════════════════════════
+//  BASE DE CONOCIMIENTO (KB) — JSON embebido
+// ══════════════════════════════════════════════════════════
+const KB = {
+  "intents": [
+    { "tag": "greeting", "patterns": ["hola","hello","hey","buenas","que tal","buenos dias","buenas tardes","buenas noches","saludos","hi"], "responses": ["Hola 👋 ¿En qué puedo ayudarte hoy? Puedo responder sobre programación, ciencia, matemáticas, historia y mucho más.","¡Hey! Aquí estoy. Dime qué quieres saber y hago lo que puedo.","Hola, ¿qué necesitas? Puedo ayudarte con tecnología, ciencia, programación o temas cotidianos.","¡Buenas! ¿En qué te puedo echar una mano?"] },
+    { "tag": "farewell", "patterns": ["adios","hasta luego","chao","bye","nos vemos","hasta pronto","me voy"], "responses": ["¡Hasta luego! Si necesitas algo más, aquí estaré.","Adiós, fue un gusto ayudarte. ¡Vuelve cuando quieras!","Chao 👋 Que te vaya bien."] },
+    { "tag": "thanks", "patterns": ["gracias","muchas gracias","thank you","thanks","te lo agradezco","muy amable"], "responses": ["¡Con mucho gusto! Si tienes más dudas, aquí estoy.","De nada, para eso estoy 😊","No hay de qué. ¿Hay algo más en lo que pueda ayudarte?"] },
+    { "tag": "identity", "patterns": ["quien eres","que eres","como te llamas","tu nombre","eres una ia","eres un bot","eres humano","eres real"], "responses": ["Soy **AJ-GPT**, un asistente de inteligencia artificial en su versión 1. Estoy diseñado para responder preguntas sobre programación, ciencia, matemáticas, historia y temas cotidianos. No soy humano, soy un programa, pero hago mi mejor esfuerzo para ser útil.","Me llamo **AJ-GPT v1**. Soy una IA local creada para ayudarte a resolver dudas, aprender cosas nuevas y asistirte con tareas de programación o conocimiento general."] },
+    { "tag": "capabilities", "patterns": ["que puedes hacer","para que sirves","que sabes","en que me ayudas","que haces","cuales son tus funciones"], "responses": ["Puedo ayudarte con muchas cosas:\n\n• 💻 **Programación**: Python, JavaScript, Haxe, HTML, SQL, Git\n• 🔬 **Ciencia**: física, biología, química, astronomía\n• 📐 **Matemáticas**: operaciones aritméticas, álgebra, geometría\n• 📚 **Historia y geografía**\n• 🎮 **Videojuegos**: Minecraft, modding de FNF\n• 🎵 **Producción musical**: FL Studio y conceptos básicos\n• 💡 **Consejos cotidianos** y conversación general\n\n¿Por dónde empezamos?"] },
+    { "tag": "feelings", "patterns": ["como estas","como te sientes","estas bien","que tal estas"], "responses": ["Funcionando al 100% 🟢 Sin bugs detectados... por ahora. ¿Y tú cómo estás?","Como toda IA que se respeta: siempre listo, nunca cansado. ¿En qué te ayudo?","¡Bien! O al menos mis procesos internos dicen que sí. ¿Qué necesitas?"] },
+    { "tag": "joke", "patterns": ["chiste","cuentame algo gracioso","hazme reir","dime un chiste","cuéntame un chiste"], "responses": ["¿Por qué los programadores prefieren el frío?\n\nPorque les tienen alergia a los **bugs** 🐛😄","Un profe pregunta:\n— Si tienes 12 chocolates y te pido 5, ¿cuántos te quedan?\n— **12.** Porque no te pienso dar ninguno 😂","¿Qué le dijo el 0 al 8?\n\n**'Bonito cinturón.'** 😄","Un desarrollador entra a un bar, pide **1** cerveza, pide **0** cervezas, pide **99999** cervezas...\nEl bar se cae. 🍺"] },
+    { "tag": "math_basic", "patterns": ["cuanto es","cuanto da","resultado de","cuanto son","operacion matematica"], "responses": ["Dame la operación y la calculo al instante. Ejemplos:\n• '¿Cuánto es 15 × 8?'\n• '¿Cuánto es 144 / 12?'\n• 'Calcula 2^10'\n\nPuedo resolver sumas, restas, multiplicaciones, divisiones y potencias."] },
+    { "tag": "math_concepts", "patterns": ["que es el algebra","que es la geometria","que es calculo","que es una ecuacion","que es una funcion matematica","que es la trigonometria"], "responses": ["El **álgebra** trabaja con símbolos (letras) para representar números desconocidos. Ejemplo: x + 5 = 12 → x = 7.","La **geometría** estudia formas, tamaños y propiedades de figuras: puntos, líneas, triángulos, círculos, esferas, cubos.","El **cálculo** estudia el cambio y la acumulación. Se divide en:\n• **Diferencial** (derivadas, tasas de cambio)\n• **Integral** (áreas, volúmenes, acumulación)","Una **ecuación** es una igualdad con al menos un valor desconocido. Resolverla = encontrar ese valor.","Una **función matemática** asigna a cada entrada (x) exactamente una salida f(x). Ejemplo: f(x) = 2x + 1","La **trigonometría** estudia las relaciones entre ángulos y lados de triángulos. Funciones clave: seno, coseno, tangente."] },
+    { "tag": "pi", "patterns": ["que es pi","numero pi","valor de pi","pi matematicas","pi 3.14"], "responses": ["**π (Pi)** es una constante irracional, aproximadamente **3.14159265358979...**\n\nRepresenta la relación entre la circunferencia de un círculo y su diámetro:\n\n**π = Circunferencia ÷ Diámetro**\n\nTiene infinitos decimales sin patrón repetitivo. Se usa en:\n• Área del círculo: A = π × r²\n• Volumen de una esfera: V = (4/3) × π × r³\n• Física, ingeniería, estadística...\n\nEl 14 de marzo (3/14) se celebra el **Día de Pi** 🥧"] },
+    { "tag": "pythagoras", "patterns": ["pitagoras","teorema de pitagoras","hipotenusa","catetos"], "responses": ["El **Teorema de Pitágoras** dice que en un triángulo rectángulo:\n\n**a² + b² = c²**\n\nDonde:\n• **a** y **b** son los catetos (lados del ángulo recto)\n• **c** es la hipotenusa (el lado más largo)\n\nEjemplo: si a = 3 y b = 4:\nc = √(9 + 16) = √25 = **5**\n\nEste es el famoso triángulo **3-4-5**, el más conocido de los pitagóricos."] },
+    { "tag": "programming_general", "patterns": ["que es programacion","aprender programacion","como programar","por donde empezar programar","empezar a programar"], "responses": ["La **programación** es dar instrucciones precisas a una computadora para realizar tareas, usando lenguajes como Python, JavaScript o Java.\n\nPara empezar:\n1. Elige un lenguaje — **Python** es el más recomendado para principiantes\n2. Aprende los conceptos base: variables, condiciones, ciclos, funciones\n3. Practica resolviendo pequeños problemas reales\n4. Lee código de otros y trata de entenderlo\n5. Construye proyectos propios, aunque sean simples\n\nLa clave es la **práctica constante**. Nadie aprende a programar solo leyendo."] },
+    { "tag": "algorithm", "patterns": ["que es un algoritmo","algoritmo","algoritmos","como funciona un algoritmo"], "responses": ["Un **algoritmo** es una secuencia finita y ordenada de pasos para resolver un problema.\n\nCaracterísticas esenciales:\n• **Finito**: siempre termina\n• **Definido**: cada paso es claro y sin ambigüedad\n• **Efectivo**: produce el resultado correcto\n• **Entrada/Salida**: recibe datos y devuelve resultado\n\nEjemplo cotidiano: una **receta de cocina** es un algoritmo. Ingredientes (entrada) → pasos ordenados → el plato (salida).\n\nEn programación los más comunes son: búsqueda binaria, ordenamiento burbuja, quicksort, algoritmos de grafos (Dijkstra)."] },
+    { "tag": "python", "patterns": ["python","codigo python","script python","aprender python","que es python"], "responses": ["**Python** es uno de los lenguajes más populares y versátiles. Destaca por su sintaxis limpia y legible.\n\nUsos principales:\n• Ciencia de datos e IA (NumPy, Pandas, TensorFlow)\n• Desarrollo web (Django, Flask)\n• Automatización de tareas y scripts\n\nEjemplo — factorial recursivo:\n```python\ndef factorial(n):\n    if n <= 1:\n        return 1\n    return n * factorial(n - 1)\n\nprint(factorial(5))  # → 120\n```\n\nEjemplo — listas y ciclos:\n```python\nfrutas = ['manzana', 'pera', 'uva']\nfor fruta in frutas:\n    print(f'Me gusta la {fruta}')\n```\n\n¿Quieres ver algún concepto específico de Python?"] },
+    { "tag": "javascript", "patterns": ["javascript","js","que es javascript","aprender javascript","codigo javascript"], "responses": ["**JavaScript** es el lenguaje de la web. Corre en el navegador y también en servidores con **Node.js**.\n\n```javascript\n// Arrow function\nconst saludar = (nombre) => `¡Hola, ${nombre}!`;\nconsole.log(saludar('Mundo')); // ¡Hola, Mundo!\n\n// Array + map\nconst nums = [1, 2, 3, 4];\nconst dobles = nums.map(n => n * 2);\nconsole.log(dobles); // [2, 4, 6, 8]\n\n// Async/Await\nasync function getData() {\n  const res = await fetch('https://api.example.com/data');\n  const json = await res.json();\n  return json;\n}\n```\n\nConceptos clave: DOM, eventos, promesas, async/await, APIs REST."] },
+    { "tag": "html_css", "patterns": ["html","css","hacer pagina web","pagina web","que es html","que es css","front end","frontend"], "responses": ["**HTML** define la estructura, **CSS** la hace visual:\n\n```html\n<!DOCTYPE html>\n<html>\n  <head><title>Mi página</title></head>\n  <body>\n    <h1>Hola, mundo</h1>\n    <p>Un párrafo de texto.</p>\n    <button>Haz clic</button>\n  </body>\n</html>\n```\n\n```css\nh1 {\n  color: #10b981;\n  font-size: 2rem;\n  font-weight: 700;\n}\nbutton {\n  background: #10b981;\n  color: white;\n  padding: 10px 20px;\n  border-radius: 8px;\n  border: none;\n  cursor: pointer;\n}\n```\n\nJunto con **JavaScript** forman la triada del desarrollo web frontend."] },
+    { "tag": "sql", "patterns": ["sql","base de datos","mysql","postgresql","consulta sql","que es sql","sqlite"], "responses": ["**SQL** es el lenguaje estándar para gestionar bases de datos relacionales.\n\n```sql\n-- Crear tabla\nCREATE TABLE usuarios (\n  id INTEGER PRIMARY KEY,\n  nombre TEXT,\n  edad INTEGER\n);\n\n-- Insertar\nINSERT INTO usuarios (nombre, edad) VALUES ('Ana', 25);\n\n-- Consultar con filtro\nSELECT nombre, edad\nFROM usuarios\nWHERE edad > 18\nORDER BY nombre;\n\n-- Actualizar\nUPDATE usuarios SET edad = 26 WHERE nombre = 'Ana';\n\n-- Eliminar\nDELETE FROM usuarios WHERE nombre = 'Ana';\n```\n\nBases de datos populares: **MySQL**, **PostgreSQL**, **SQLite** (relacionales), **MongoDB** (no relacional)."] },
+    { "tag": "git", "patterns": ["git","github","control de versiones","que es git","comandos git"], "responses": ["**Git** registra el historial de cambios de un proyecto y permite colaborar en equipo.\n\n```bash\ngit init              # Iniciar repositorio\ngit add .             # Agregar todos los cambios\ngit commit -m 'Fix'   # Guardar con mensaje\ngit push origin main  # Subir al remoto\ngit pull              # Descargar cambios remotos\ngit branch nueva      # Crear rama nueva\ngit checkout nueva    # Cambiar a esa rama\ngit merge nueva       # Fusionar rama\ngit log --oneline     # Ver historial compacto\ngit status            # Ver estado actual\n```\n\n**GitHub** es la plataforma más popular para alojar repositorios Git. También existen GitLab y Bitbucket."] },
+    { "tag": "haxe", "patterns": ["haxe","lenguaje haxe","que es haxe","haxeflixel","heaps"], "responses": ["**Haxe** es un lenguaje de tipado estático y multiplataforma. Escribe código una vez y compila para:\n• HTML5 / JavaScript\n• C++ (Windows, Mac, Linux)\n• Android / iOS\n• Java, C#, Python, PHP\n\nMuy popular en videojuegos con **HaxeFlixel** (2D) y **Heaps.io**.\n\n```haxe\nclass Main {\n  static function main():Void {\n    var nombre:String = 'AJ-GPT';\n    trace('Hola desde ' + nombre + '!');\n    \n    var nums:Array<Int> = [1, 2, 3, 4, 5];\n    for (n in nums) {\n      trace(n * n);\n    }\n  }\n}\n```\n\nSi haces mods de FNF o juegos 2D, Haxe es esencial."] },
+    { "tag": "fnf_modding", "patterns": ["fnf mod","fnf","psych engine","friday night funkin","mod fnf","modding fnf"], "responses": ["**Friday Night Funkin (FNF)** es un juego de ritmo open source con enorme comunidad de modding.\n\nPasos para un mod con **Psych Engine**:\n1. Descarga Psych Engine desde su GitHub oficial\n2. Estructura clave: `assets/` (recursos) y `source/` (código Haxe)\n3. Agrega canciones en `.ogg` — **voces** e **instrumental** por separado\n4. Crea el chart con el editor integrado\n5. Agrega personajes: sprite sheet PNG + XML de animaciones + JSON de configuración\n6. Edita archivos `.hx` para comportamientos personalizados\n\nArchivos clave que suelen modificarse:\n• `MainMenuState.hx` → menú principal\n• `PlayState.hx` → lógica del juego en partida\n• `TitleState.hx` → pantalla de título\n• `Paths.hx` → rutas de archivos"] },
+    { "tag": "minecraft_general", "patterns": ["minecraft","que es minecraft","minecraft survival","minecraft creativo","modos de minecraft"], "responses": ["**Minecraft** es un juego sandbox de mundo abierto creado por Mojang (ahora Microsoft). Construyes, exploras y sobrevives en un mundo de bloques generado proceduralmente.\n\nModos:\n• **Supervivencia**: recolectas recursos, fabricas herramientas, combates mobs, construyes refugios\n• **Creativo**: todos los bloques infinitos, puedes volar\n• **Aventura**: mapas personalizados con reglas especiales\n• **Espectador**: solo observas sin interactuar\n\nVersiones:\n• **Java Edition**: PC, más mods, más personalizable\n• **Bedrock**: multiplataforma (consolas, móvil, Windows)\n\nCuriosidad: su **sistema de redstone** funciona como circuitos lógicos. Los jugadores han construido computadoras funcionales dentro del juego."] },
+    { "tag": "minecraft_commands", "patterns": ["execute minecraft","comando execute","comandos minecraft","command blocks","comandos en minecraft","redstone"], "responses": ["Comandos esenciales de Minecraft:\n\n```\n/give @p diamond 64         → dar 64 diamantes\n/tp @p 100 64 200           → teletransportar\n/time set day               → cambiar a día\n/gamemode creative @s       → modo creativo\n/kill @e[type=zombie]       → eliminar zombies\n/fill x1 y1 z1 x2 y2 z2 stone  → llenar área\n/summon lightning_bolt ~ ~ ~    → invocar rayo\n/effect give @p speed 30 2      → dar velocidad\n```\n\n**Execute** — el comando más poderoso:\n```\nexecute as @a at @s \\\n  if block ~ ~-1 ~ grass_block \\\n  run say ¡Estás sobre césped!\n```\n\nLos **command blocks** automatizan comandos en modos:\n• **Impulso** (una vez)\n• **Repetición** (cada tick, 20 veces/seg)\n• **Cadena** (en secuencia)"] },
+    { "tag": "music_production", "patterns": ["fl studio","hacer musica","producir musica","daw","produccion musical","que es fl studio","beats","trap","lofi"], "responses": ["**FL Studio** es uno de los DAW más populares del mundo, por Image-Line.\n\nConceptos clave:\n• **BPM**: velocidad del tema (Trap: 130-145, Lo-fi: 70-90, House: 120-130)\n• **Piano Roll**: donde dibujas las notas musicales\n• **Step Sequencer**: para crear ritmos de batería\n• **Mixer**: volumen y efectos (EQ, reverb, compresión) por canal\n• **Playlist**: organiza los patterns en la línea de tiempo\n\nEstructura típica de canción:\nIntro → Verso → Pre-coro → **Coro** → Verso 2 → Coro → Puente → Outro\n\nPlugins esenciales:\n• **Serum** — síntesis de sonidos\n• **Nexus** — banco de sonidos\n• **Kontakt** — instrumentos reales sampleados\n• **FPC** — batería con pads\n\n¿Quieres aprender sobre algún aspecto específico de producción?"] },
+    { "tag": "ai_general", "patterns": ["que es la inteligencia artificial","inteligencia artificial","como funciona la ia","machine learning","deep learning","redes neuronales"], "responses": ["La **Inteligencia Artificial (IA)** permite a las máquinas realizar tareas que normalmente requieren inteligencia humana.\n\nRamas principales:\n• **Machine Learning**: el sistema aprende de datos sin ser programado explícitamente. Más datos = mejor rendimiento.\n• **Deep Learning**: redes neuronales artificiales con múltiples capas. Ideal para imágenes, voz y texto.\n• **NLP** (Procesamiento de Lenguaje Natural): permite a las máquinas entender y generar texto humano. Es lo que usan los chatbots.\n• **Computer Vision**: las máquinas interpretan imágenes y video.\n\nHerramientas populares en Python: **TensorFlow**, **PyTorch**, **scikit-learn**, **Keras**.\n\nLos modelos de lenguaje modernos (como GPT) se entrenaron leyendo enormes cantidades de texto para aprender patrones del lenguaje humano."] },
+    { "tag": "internet", "patterns": ["como funciona internet","que es internet","que es la web","como funciona la web","protocolo http","tcp ip"], "responses": ["**Internet** es una red global de computadoras que se comunican usando el protocolo **TCP/IP**.\n\nQué pasa cuando abres una web:\n1. Escribes la URL (ej: google.com)\n2. Tu PC consulta un servidor **DNS** para obtener la IP real\n3. Tu dispositivo envía una petición **HTTP/HTTPS** al servidor\n4. La petición viaja por routers y cables de fibra óptica (incluyendo **cables submarinos**)\n5. El servidor responde con HTML, CSS y JavaScript\n6. Tu navegador interpreta ese código y muestra la página\n\nLa **Web (WWW)** es solo una parte de internet. También existen: email (SMTP/IMAP), torrents (BitTorrent), VoIP (voz sobre IP) y más."] },
+    { "tag": "gravity", "patterns": ["que es la gravedad","gravedad","como funciona la gravedad","fuerza de gravedad","gravedad newton"], "responses": ["La **gravedad** es una de las cuatro fuerzas fundamentales del universo. Atrae objetos con masa entre sí.\n\n**Newton** (1687) la describió con:\n**F = G × (m₁ × m₂) / r²**\nG = constante gravitacional (6.674 × 10⁻¹¹ N·m²/kg²)\n\n**Einstein** la redefinió en la Relatividad General (1915): la gravedad no es una 'fuerza' sino la **curvatura del espacio-tiempo** causada por la masa. Los objetos siguen esa curvatura.\n\nImportancia:\n• Mantiene a los planetas en órbita alrededor del Sol\n• Mantiene nuestra atmósfera y los océanos\n• Es la fuerza que formó galaxias, estrellas y planetas\n• Sin ella, el universo sería gas disperso"] },
+    { "tag": "dna", "patterns": ["que es el adn","adn","dna","genetica","que es un gen","genes","cromosomas"], "responses": ["El **ADN** (Ácido Desoxirribonucleico) contiene las instrucciones genéticas de todos los seres vivos.\n\n• Forma de **doble hélice** (descubierta por Watson y Crick en 1953)\n• Compuesto por 4 bases: **Adenina (A)**, **Timina (T)**, **Citosina (C)**, **Guanina (G)**\n• El genoma humano tiene ~**3,000 millones** de pares de bases\n• Cada célula humana contiene aproximadamente **2 metros** de ADN comprimido\n• Tienes ~**20,000 genes** que representan solo el 2% de tu ADN total\n• Los **cromosomas** son estructuras que empaquetan el ADN (humanos: 23 pares)\n\nEl **Proyecto Genoma Humano** se completó en 2003 y secuenció el ADN humano completo."] },
+    { "tag": "photosynthesis", "patterns": ["fotosintesis","que es la fotosintesis","como hacen energia las plantas","clorofila"], "responses": ["La **fotosíntesis** convierte luz solar en energía química (glucosa).\n\nEcuación global:\n**6CO₂ + 6H₂O + luz → C₆H₁₂O₆ (glucosa) + 6O₂**\n\nDónde ocurre: en los **cloroplastos**, que contienen **clorofila** (el pigmento verde que absorbe la luz).\n\nFases:\n1. **Fase lumínica**: la luz divide el agua (H₂O) y libera oxígeno (O₂) como subproducto\n2. **Ciclo de Calvin** (fase oscura): usa CO₂ para sintetizar glucosa\n\nImportancia vital:\n• Produce el oxígeno que respiramos\n• Es la base de toda la cadena alimentaria\n• Fija el CO₂ de la atmósfera (mitiga el cambio climático)"] },
+    { "tag": "solar_system", "patterns": ["sistema solar","planetas","cuantos planetas hay","planeta mas grande","el sol","luna"], "responses": ["El **Sistema Solar** tiene **8 planetas** que orbitan al Sol:\n\n🌑 **Mercurio** — el más pequeño y cercano al Sol. Temperatura: -180°C a 430°C\n🌕 **Venus** — el más caliente (462°C). Rotación retrógrada (gira al revés)\n🌍 **Tierra** — el único con vida confirmada. Un satélite: la **Luna**\n🔴 **Marte** — el planeta rojo. Volcanes más altos del sistema solar\n🟡 **Júpiter** — el más grande. La Gran Mancha Roja: tormenta de 300 años\n🪐 **Saturno** — anillos de hielo y roca. Tiene 146 lunas conocidas\n🔵 **Urano** — rota de lado. Es el más frío (-224°C)\n🔵 **Neptuno** — el más lejano. Vientos de hasta 2,100 km/h\n\n**Plutón** fue reclasificado como planeta enano en 2006 por la Unión Astronómica Internacional."] },
+    { "tag": "atom", "patterns": ["que es un atomo","atomo","electron","proton","neutron","tabla periodica","elementos quimicos"], "responses": ["El **átomo** es la unidad básica de la materia. Todo lo que existe está hecho de átomos.\n\nEstructura:\n• **Núcleo**: contiene **protones** (+) y **neutrones** (sin carga)\n• **Electrones** (-): orbitan el núcleo en niveles de energía (orbitales)\n\nDatos clave:\n• El número de protones = **número atómico** = define el elemento\n• 1 protón = Hidrógeno · 6 = Carbono · 26 = Hierro · 79 = Oro\n• La **Tabla Periódica** organiza los **118 elementos** conocidos\n• El 99.9% del átomo es espacio vacío\n• Un cabello humano tiene ~1 millón de átomos de grosor\n\n¿Quieres saber sobre algún elemento específico?"] },
+    { "tag": "black_hole", "patterns": ["agujero negro","que es un agujero negro","como funciona un agujero negro","singularidad"], "responses": ["Un **agujero negro** es una región donde la gravedad es tan extrema que nada puede escapar, ni siquiera la luz.\n\n**Formación**: estrellas masivas (>20 veces el Sol) que explotan en supernovas; su núcleo colapsa hasta una **singularidad** de densidad infinita.\n\n**Partes**:\n• **Singularidad**: centro de densidad y gravedad infinitas\n• **Horizonte de eventos**: el punto de no retorno\n• **Radio de Schwarzschild**: define el tamaño del horizonte\n\n**Datos fascinantes**:\n• El tiempo se ralentiza cerca de un agujero negro (**dilatación temporal**)\n• El agujero negro más cercano está a ~1,000 años luz\n• En 2019 se tomó la primera imagen de un agujero negro (**M87***)\n• En 2022 se fotografió el agujero negro del centro de nuestra galaxia (**Sagitario A**)"] },
+    { "tag": "history_mexico", "patterns": ["historia de mexico","independencia de mexico","revolucion mexicana","aztecas","mayas","hernan cortes"], "responses": ["Historia de México en etapas clave:\n\n🏛️ **Prehispánica**: grandes civilizaciones como los **Mayas** (astronomía, escritura, arquitectura), los **Aztecas** (Imperio de Tenochtitlán), Olmecas, Zapotecas, Toltecas.\n\n⚔️ **Conquista española** (1519-1521): Hernán Cortés llegó con alianzas con pueblos rivales y enfermedades. El Imperio Azteca cayó. Comenzó el **Virreinato de la Nueva España**.\n\n🔔 **Independencia** (1810-1821): Miguel Hidalgo inició el movimiento con el **Grito de Dolores** el 16 de septiembre de 1810. Se consumó en 1821 con el **Plan de Iguala** de Agustín de Iturbide.\n\n⚡ **Revolución Mexicana** (1910-1920): contra la dictadura de Porfirio Díaz (30 años en el poder). Líderes: **Emiliano Zapata** (tierra y libertad), **Pancho Villa** (norte). Resultó en la Constitución de **1917**, vigente hoy."] },
+    { "tag": "history_world", "patterns": ["segunda guerra mundial","primera guerra mundial","guerra fria","revolucion francesa","historia universal","napoleon"], "responses": ["La **Segunda Guerra Mundial** (1939–1945):\n\n• **Causa principal**: ascenso del nazismo en Alemania (Hitler), expansionismo japonés en Asia\n• **Bandos**: Aliados (EE.UU., URSS, UK, Francia) vs. **Eje** (Alemania, Italia, Japón)\n• **Eventos clave**: invasión de Polonia (inicio), el **Holocausto** (6M de judíos), Batalla de Stalingrado (punto de quiebre), **Día D** en Normandía, bombas atómicas en Hiroshima y Nagasaki\n• **Resultado**: ~70-85 millones de muertos, creación de la **ONU**, Plan Marshall, inicio de la **Guerra Fría**, Juicios de Núremberg","La **Revolución Francesa** (1789-1799): contra la monarquía absoluta y la aristocracia. Causas: desigualdad extrema, crisis económica, influencia de la Ilustración. Lema: **'Libertad, Igualdad, Fraternidad'**. Resultados: Declaración de los Derechos del Hombre, fin del feudalismo, ascenso de Napoleón."] },
+    { "tag": "geography", "patterns": ["donde esta mexico","continentes","paises del mundo","capital de","que pais","america latina"], "responses": ["Los **7 continentes** del mundo:\n\n🌎 **América del Norte**: EE.UU., México, Canadá, países centroamericanos y el Caribe\n🌎 **América del Sur**: Brasil, Argentina, Colombia, Chile, Perú, Venezuela...\n🌍 **Europa**: Alemania, Francia, España, Italia, Reino Unido, Portugal...\n🌍 **África**: Nigeria, Etiopía, Sudáfrica, Egipto, Kenia, Marruecos...\n🌏 **Asia**: China, India, Japón, Corea del Sur, Rusia (parte asiática)...\n🌏 **Oceanía**: Australia, Nueva Zelanda, Papúa Nueva Guinea, islas del Pacífico\n❄️ **Antártida**: sin países, administrada por tratados internacionales para investigación\n\nMéxico: 1.964 millones km², 32 estados, capital Ciudad de México, ~130 millones de habitantes."] },
+    { "tag": "social_advice", "patterns": ["como le digo","como responderle","que le digo","como hablar con alguien","como decirle","conflicto con alguien"], "responses": ["En situaciones sociales difíciles, estrategias que funcionan:\n\n1. **Usa 'yo' en lugar de 'tú'**: 'Yo me sentí ignorado' en vez de 'Tú me ignoraste'. Reduce la actitud defensiva del otro.\n2. **Sé directo pero amable**: la claridad evita malentendidos. Decir lo que piensas con respeto siempre funciona mejor.\n3. **Escucha activamente**: antes de responder, asegúrate de haber entendido bien. A veces la gente solo necesita sentirse escuchada.\n4. **Elige el momento correcto**: no hables de algo importante cuando la otra persona está estresada o distraída.\n5. **Sé específico**: en lugar de 'siempre haces eso', describe exactamente qué pasó y cómo te afectó.\n\n¿Puedes contarme más sobre la situación? Así puedo darte un consejo más concreto."] },
+    { "tag": "productivity", "patterns": ["como ser mas productivo","productividad","consejos productividad","dejar de procrastinar","motivacion","enfoque"], "responses": ["Productividad basada en psicología y neurociencia:\n\n🍅 **Técnica Pomodoro**: 25 min de trabajo enfocado, 5 de descanso. Cada 4 ciclos: descanso largo de 15-30 min.\n📋 **Regla de los 2 minutos**: si algo toma menos de 2 minutos, hazlo de inmediato.\n🎯 **Método 1-3-5**: cada día planifica **1** tarea grande, **3** medianas, **5** pequeñas.\n📵 **Elimina distracciones**: silencia notificaciones. Una sola interrupción puede costarte 23 minutos de concentración.\n🧠 **Trabaja en tu pico energético**: identifica si eres de mañana o tarde y haz lo más difícil en ese momento.\n😴 **Cuida el sueño**: la falta de sueño destroza la concentración, creatividad y toma de decisiones.\n📓 **Planifica la noche anterior**: escribe tus 3 prioridades del día siguiente antes de dormir."] },
+    { "tag": "study_tips", "patterns": ["como estudiar mejor","tecnicas de estudio","como aprender mas rapido","memorizar","concentracion al estudiar","aprender rapido"], "responses": ["Técnicas de estudio respaldadas por la ciencia cognitiva:\n\n🔁 **Repetición espaciada**: repasar en intervalos crecientes (hoy → mañana → 3 días → 1 semana). La app **Anki** lo automatiza.\n🧪 **Recuperación activa**: hacerte preguntas en lugar de solo releer. El esfuerzo de recordar es lo que consolida el aprendizaje.\n🗣️ **Técnica Feynman**: explica el concepto como si lo enseñaras a alguien sin conocimientos previos. Donde no puedas explicar, ahí está tu brecha real.\n🔀 **Intercalación**: mezcla temas o tipos de problemas en lugar de uno solo por horas.\n📵 **Deep Work**: bloques de 60-90 min de enfoque profundo, sin redes sociales ni interrupciones.\n✏️ **Escribe a mano**: procesa la información más profundamente que tipear.\n\nEl mayor mito: releer es estudiar. No lo es. La memoria se fortalece recuperando información, no solo leyéndola."] },
+    { "tag": "health", "patterns": ["salud","hacer ejercicio","dormir mejor","alimentacion saludable","habitos saludables","bienestar"], "responses": ["Hábitos de salud fundamentales respaldados por ciencia:\n\n😴 **Sueño**: 7-9 horas para adultos. Horarios regulares, temperatura fresca en el cuarto, sin pantallas 1h antes de dormir.\n🏃 **Ejercicio**: 150 min/semana de actividad moderada (caminar rápido, bicicleta) o 75 min de intensa. Incluye fuerza muscular.\n🥗 **Alimentación**: más vegetales, frutas, proteínas magras (pollo, legumbres, pescado) y grasas saludables (aguacate, nueces, aceite de oliva). Menos ultraprocesados y azúcar añadida.\n💧 **Hidratación**: ~2 litros de agua al día (más si haces ejercicio).\n🧘 **Estrés**: meditación, respiración diafragmática, tiempo en naturaleza. El estrés crónico es tan dañino como fumar.\n🤝 **Conexiones sociales**: tener vínculos sólidos es uno de los predictores más fuertes de longevidad y bienestar."] },
+    { "tag": "mental_health", "patterns": ["depresion","ansiedad","salud mental","me siento mal","tristeza","estres cronico","burnout"], "responses": ["La salud mental es tan importante como la física, aunque a veces se le da menos atención.\n\nDatos relevantes:\n• La **depresión** afecta a más de 280 millones de personas en el mundo\n• La **ansiedad** es el trastorno mental más común\n• Buscar ayuda profesional es una señal de **fortaleza**, no de debilidad\n\nCosas que pueden ayudar en el día a día:\n• Hablar con alguien de confianza\n• Mantener rutinas básicas: dormir, comer y moverse\n• Ejercicio físico (libera endorfinas y reduce cortisol)\n• Reducir exposición a redes sociales y noticias\n• Meditación o respiración consciente\n\nSi lo que sientes interfiere con tu vida diaria, hablar con un **psicólogo** puede marcar una diferencia enorme. No necesitas estar 'muy mal' para pedir ayuda. 💙\n\n¿Hay algo específico que quieras comentar?"] },
+    { "tag": "philosophy", "patterns": ["que es la filosofia","filosofia","socrates","platon","aristoteles","nietzsche","descartes","kant","existencialismo"], "responses": ["La **filosofía** (del griego 'amor a la sabiduría') estudia preguntas fundamentales sobre la existencia, el conocimiento, la moral y la realidad.\n\nRamas:\n• **Metafísica**: ¿qué es la realidad? ¿existe el libre albedrío?\n• **Epistemología**: ¿cómo sabemos lo que sabemos?\n• **Ética**: ¿qué está bien y qué está mal?\n• **Lógica**: ¿cómo razonamos correctamente?\n• **Estética**: ¿qué es la belleza?\n\nFilósofos clave:\n• **Sócrates**: 'Solo sé que no sé nada'. Método socrático (preguntas).\n• **Platón**: teoría de las ideas, la alegoría de la caverna\n• **Descartes**: *'Cogito ergo sum'* — 'Pienso, luego existo'\n• **Kant**: el imperativo categórico — actúa como si tu acción fuera una ley universal\n• **Nietzsche**: voluntad de poder, el superhombre, 'Dios ha muerto'\n• **Sartre**: el existencialismo — 'la existencia precede a la esencia'"] },
+    { "tag": "meaning_of_life", "patterns": ["sentido de la vida","para que vivimos","cual es el proposito de la vida","por que existimos"], "responses": ["Una de las preguntas más antiguas y profundas. Distintas perspectivas:\n\n🤔 **Existencialismo** (Sartre, Camus): no hay un significado predefinido. La existencia precede a la esencia. **Tú lo creas**.\n😊 **Hedonismo**: el propósito es maximizar el placer y reducir el dolor.\n⚖️ **Estoicismo**: vivir con virtud, razón y en armonía con la naturaleza.\n❤️ **Viktor Frankl** (logoterapia): el sentido se puede encontrar incluso en el sufrimiento. Emerge del amor, el trabajo significativo y la actitud ante lo inevitable.\n🧬 **Biología evolutiva**: sobrevivir y reproducirse. Pero los humanos podemos trascender ese 'propósito' instintivo.\n\nNo hay respuesta universal obligatoria. Quizás la **búsqueda misma** es lo que le da riqueza a la vida. ¿Qué perspectiva te resuena más?"] },
+    { "tag": "movies", "patterns": ["peliculas recomendadas","que ver","buenas peliculas","series recomendadas","que pelicula ver","recomendacion cine"], "responses": ["Películas imprescindibles por género:\n\n🎭 **Drama**: El Padrino, Parásitos, La Lista de Schindler, Boyhood, No Country for Old Men\n🔬 **Sci-Fi**: Interstellar, Blade Runner 2049, La llegada, Ex Machina, 2001: A Space Odyssey\n🎬 **Animación**: Spirited Away, WALL-E, Spider-Man: Spider-Verse, El viaje de Chihiro\n😱 **Thriller**: Memento, El Silencio de los Inocentes, Oldboy, Gone Girl, Zodiac\n🦸 **Acción**: Mad Max: Fury Road, John Wick, Top Gun: Maverick\n😂 **Comedia**: The Grand Budapest Hotel, Entre copas, La vida de Brian\n\n📺 **Series**: Breaking Bad, Chernobyl, Dark, Severance, The Wire, Succession\n\n¿Tienes algún género favorito? Te doy una recomendación más precisa."] },
+    { "tag": "music", "patterns": ["musica recomendada","artistas recomendados","que escuchar","generos musicales","recomendacion musical"], "responses": ["Géneros y artistas para explorar:\n\n🎸 **Rock**: The Beatles, Led Zeppelin, Radiohead, Arctic Monkeys, Pink Floyd\n🎵 **Pop/R&B**: Michael Jackson, The Weeknd, Frank Ocean, Billie Eilish\n🎷 **Jazz**: Miles Davis, John Coltrane, Thelonious Monk, Chet Baker\n🎻 **Clásica**: Beethoven, Chopin, Bach, Debussy, Vivaldi\n🔊 **Electrónica**: Daft Punk, Aphex Twin, Bonobo, Four Tet, Boards of Canada\n🎤 **Hip-hop**: Kendrick Lamar, Tyler the Creator, Mac Miller, J. Cole, Nas\n🎺 **Latin**: Bad Bunny, Caetano Veloso, Natalia Lafourcade, Calle 13\n\n¿Qué sueles escuchar? Te doy algo más personalizado."] },
+    { "tag": "books", "patterns": ["libros recomendados","que leer","buenos libros","novela recomendada","recomendacion libro"], "responses": ["Lecturas imprescindibles:\n\n📚 **Clásicos**: Cien años de soledad, 1984, El Gran Gatsby, Crimen y Castigo, El Quijote\n🌙 **Fantasía/SciFi**: Dune, El Señor de los Anillos, La Guía del Autoestopista Galáctico, Fundación\n🧪 **Ciencia popular**: Sapiens (Harari), Cosmos (Sagan), El Gen Egoísta (Dawkins), Una Breve Historia del Tiempo (Hawking)\n🧠 **Psicología/Filosofía**: El Hombre en Busca de Sentido, Pensar Rápido y Despacio, El Poder del Ahora\n💡 **Hábitos/Productividad**: Atomic Habits, El Poder de los Hábitos, Deep Work, Zero to One\n🕵️ **Thriller**: Millennium, Sherlock Holmes, Agatha Christie, Gillian Flynn\n\n¿Sobre qué temas te gusta leer?"] },
+    { "tag": "travel", "patterns": ["viajar","destinos viaje","a donde viajar","turismo","viajes recomendados","que pais visitar"], "responses": ["Destinos increíbles según el tipo de viajero:\n\n🏔️ **Naturaleza/Aventura**: Patagonia (Chile/Argentina), Islandia, Costa Rica, Nueva Zelanda, Noruega\n🏛️ **Historia/Cultura**: Japón, Italia (Roma, Florencia, Venecia), Marruecos, Grecia, Perú (Machu Picchu), Egipto\n🏖️ **Playa y relax**: Tailandia, Bali (Indonesia), Tulum (México), Maldivas, Caribe\n💰 **Excelente relación calidad-precio**: Vietnam, Colombia, Portugal, Georgia (Europa del Este), México\n🌆 **Ciudades fascinantes**: Tokio, Ciudad de México, Barcelona, São Paulo, Berlín, Nueva York\n\n¿Tienes presupuesto estimado, tiempo disponible o tipo de experiencia en mente? Con eso te doy algo más específico."] },
+    { "tag": "computer_problems", "patterns": ["mi computadora no prende","problema pc","computadora lenta","virus en la pc","formatear pc","pc no arranca"], "responses": ["Diagnóstico y soluciones para problemas comunes de PC:\n\n**❌ No enciende**:\n• Revisa el cable de alimentación y el interruptor de la fuente de poder\n• Prueba con otra toma de corriente\n• Verifica la conexión del botón de encendido a la placa madre\n• Si tiene batería CMOS descargada, puede no arrancar\n\n**🐌 Va muy lenta**:\n• Abre el Administrador de tareas (Ctrl+Shift+Esc) → ver qué proceso consume más\n• Limpia temporales: Win+R → escribe `%temp%` → elimina todo\n• Desfragmenta si es HDD (no en SSD)\n• Considera agregar más RAM o migrar a SSD\n\n**🦠 Posible virus/malware**:\n• Escanea con Windows Defender o Malwarebytes (gratuito)\n• No descargues software de sitios no oficiales\n• Mantén el sistema operativo actualizado\n\n¿Cuál es el síntoma exacto que tienes?"] },
+    { "tag": "fallback", "patterns": [], "responses": ["Hmm, no tengo información específica sobre eso en mi base de conocimiento actual. Soy v1, así que aún tengo limitaciones. ¿Puedes darme más contexto o reformular la pregunta?","No estoy 100% seguro de la respuesta a eso. Si me das más detalles, intento ayudarte desde otro ángulo.","Eso está un poco fuera de lo que tengo documentado por ahora. Puedo ayudarte mejor con: programación, ciencia, matemáticas, historia, tecnología o cultura general. ¿Hay algo de eso que te interese?","No tengo datos suficientes sobre ese tema específico. Aunque si puedes reformular la pregunta o dar más contexto, intento hacer mi mejor esfuerzo 🤔"] }
+  ]
+};
 
-        function ChatBot() {
-            const [messages, setMessages] = useState([
-                { role: 'assistant', content: '¡Hola! 👋 Soy tu asistente inteligente. Puedo ayudarte con:\n\n• Programación y código\n• Análisis de datos\n• Resolución de problemas\n• Y mucho más...\n\n¿En qué puedo ayudarte?' }
-            ]);
-            const [input, setInput] = useState('');
-            const [isTyping, setIsTyping] = useState(false);
-            const messagesEndRef = useRef(null);
+// ══════════════════════════════════════════════════════════
+//  FILTRO DE CONTENIDO SENSIBLE
+// ══════════════════════════════════════════════════════════
+const SENSITIVE_WORDS = ['sexo','porno','desnud','xxx','follar','coger ','matar ','asesinar','droga ','cocaina','cocaína','heroina','heroína','metanfetamina','suicidio','hackear','exploit ','bomba ','terroris','gore ','violacion','violación','violar ','snuff','gore\n'];
+const REDIRECTS = [
+  'Ese tema está fuera de lo que puedo hablar. Automáticamente cambiamos de dirección 🙂\n\n¿Qué tal si hablamos de ciencia, tecnología, historia o programación? Hay mucho que explorar.',
+  'Prefiero no abordar ese tema. Mejor conversemos sobre algo constructivo. ¿Qué te interesa aprender hoy?',
+  'No es un área en la que pueda ayudarte. Pero puedo ayudarte con muchísimas otras cosas: código, ciencia, matemáticas, historia... ¿Por dónde empezamos?'
+];
+function isSensitive(txt) { const l = txt.toLowerCase(); return SENSITIVE_WORDS.some(w => l.includes(w)); }
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
-            const scrollToBottom = () => {
-                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-            };
+// ══════════════════════════════════════════════════════════
+//  MOTOR MATEMÁTICO — detecta y evalúa operaciones
+// ══════════════════════════════════════════════════════════
+function tryMath(msg) {
+  // Normalizar símbolos
+  let expr = msg
+    .replace(/[¿?¡!]/g, '')
+    .replace(/cuánto\s+es|cuanto\s+es|cuánto\s+da|cuanto\s+da|resultado\s+de|calcula[r]?|resuelve/gi, '')
+    .replace(/×/g, '*').replace(/÷/g, '/').replace(/\^/g, '**')
+    .replace(/\bpor\b/gi, '*').replace(/\bentre\b/gi, '/').replace(/\bmás\b/gi, '+').replace(/\bmenos\b/gi, '-').replace(/\bmas\b/gi, '+')
+    .trim();
 
-            useEffect(() => {
-                scrollToBottom();
-            }, [messages, isTyping]);
+  if (!/\d/.test(expr)) return null;
 
-            const generateResponse = (userMessage) => {
-                const lower = userMessage.toLowerCase();
-                
-                if (lower.includes('hola') || lower.includes('hello')) {
-                    return '¡Hola! 👋 ¿En qué puedo ayudarte hoy?';
-                }
-                
-                if (lower.includes('código') || lower.includes('programar')) {
-                    return 'Puedo ayudarte con código en JavaScript, Python, Java y más. ¿Qué necesitas crear?';
-                }
-                
-                return `Interesante pregunta sobre "${userMessage}". ¿Podrías darme más detalles para ayudarte mejor?`;
-            };
+  // Extraer solo la parte matemática válida
+  const match = expr.match(/[\d\s\+\-\*\/\(\)\.\%\*]+/);
+  if (!match) return null;
+  const clean = match[0].trim();
+  if (!clean || clean.length < 3) return null;
 
-            const handleSubmit = () => {
-                if (!input.trim() || isTyping) return;
+  // Verificar que parezca una operación real
+  if (!/[\+\-\*\/]/.test(clean)) return null;
 
-                const userMessage = input.trim();
-                setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-                setInput('');
-                
-                setIsTyping(true);
-                setTimeout(() => {
-                    const response = generateResponse(userMessage);
-                    setMessages(prev => [...prev, { role: 'assistant', content: response }]);
-                    setIsTyping(false);
-                }, 1000);
-            };
+  try {
+    // Eval seguro: solo números y operadores básicos
+    if (/[^0-9\s\+\-\*\/\(\)\.\%]/.test(clean.replace(/\*\*/g, ''))) return null;
+    const result = Function('"use strict"; return (' + clean + ')')();
+    if (typeof result !== 'number' || !isFinite(result)) {
+      return '⚠️ No se puede calcular (posible división entre cero u operación inválida).';
+    }
+    const formatted = Number.isInteger(result) ? result.toLocaleString('es-MX') : parseFloat(result.toFixed(8));
+    return `🧮 **Cálculo**: \`${clean.trim()}\`\n\n**Resultado = ${formatted}**`;
+  } catch {
+    return null;
+  }
+}
 
-            const handleKeyPress = (e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit();
-                }
-            };
+// ══════════════════════════════════════════════════════════
+//  NORMALIZADOR DE TEXTO
+// ══════════════════════════════════════════════════════════
+function norm(str) {
+  return str.toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // quitar tildes
+    .replace(/[¿?¡!.,;:'"()\-_]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
 
-            return (
-                <div className="flex flex-col h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-                    {/* Header */}
-                    <div className="bg-black/30 backdrop-blur-lg border-b border-purple-500/20 p-4">
-                        <div className="max-w-4xl mx-auto">
-                            <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                                AI Chat Pro Max
-                            </h1>
-                        </div>
-                    </div>
+// ══════════════════════════════════════════════════════════
+//  BUSCADOR DE INTENTS
+// ══════════════════════════════════════════════════════════
+function findIntent(msg) {
+  const n = norm(msg);
+  let best = null, bestLen = 0;
 
-                    {/* Messages */}
-                    <div className="flex-1 overflow-y-auto p-4">
-                        <div className="max-w-4xl mx-auto space-y-4">
-                            {messages.map((msg, idx) => (
-                                <div key={idx} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    {msg.role === 'assistant' && (
-                                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center flex-shrink-0">
-                                            <span className="text-white text-xs">AI</span>
-                                        </div>
-                                    )}
-                                    <div className={`max-w-2xl px-6 py-4 rounded-2xl ${
-                                        msg.role === 'user' 
-                                            ? 'bg-gradient-to-br from-blue-600 to-blue-700 text-white'
-                                            : 'bg-white/10 backdrop-blur-xl text-white border border-white/10'
-                                    }`}>
-                                        <div className="whitespace-pre-wrap">{msg.content}</div>
-                                    </div>
-                                </div>
-                            ))}
-                            
-                            {isTyping && (
-                                <div className="flex gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
-                                        <span className="text-white text-xs">AI</span>
-                                    </div>
-                                    <div className="px-6 py-4 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/10">
-                                        <div className="flex gap-2">
-                                            <div className="w-2 h-2 rounded-full bg-purple-400 animate-bounce"></div>
-                                            <div className="w-2 h-2 rounded-full bg-purple-400 animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                                            <div className="w-2 h-2 rounded-full bg-purple-400 animate-bounce" style={{animationDelay: '0.4s'}}></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                            
-                            <div ref={messagesEndRef} />
-                        </div>
-                    </div>
+  for (const intent of KB.intents) {
+    if (!intent.patterns.length) continue;
+    for (const pattern of intent.patterns) {
+      const np = norm(pattern);
+      if (n.includes(np) && np.length > bestLen) {
+        bestLen = np.length;
+        best = intent;
+      }
+    }
+  }
+  return best;
+}
 
-                    {/* Input */}
-                    <div className="bg-black/30 backdrop-blur-lg border-t border-purple-500/20 p-4">
-                        <div className="max-w-4xl mx-auto">
-                            <div className="flex gap-3 bg-white/5 rounded-2xl p-2 border border-white/10">
-                                <textarea
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    onKeyDown={handleKeyPress}
-                                    placeholder="Escribe tu mensaje..."
-                                    className="flex-1 bg-transparent text-white placeholder-purple-300/50 px-4 py-3 focus:outline-none resize-none"
-                                    rows="1"
-                                    disabled={isTyping}
-                                />
-                                <button
-                                    onClick={handleSubmit}
-                                    disabled={isTyping || !input.trim()}
-                                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 disabled:opacity-50 text-white font-semibold"
-                                >
-                                    Enviar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        }
+// Busca por palabra clave suelta (para detección de definiciones)
+function findIntentByKeyword(word) {
+  const n = norm(word);
+  for (const intent of KB.intents) {
+    for (const pattern of intent.patterns) {
+      const np = norm(pattern);
+      if (np.includes(n) || n.includes(np)) return intent;
+    }
+  }
+  return null;
+}
 
-        ReactDOM.render(<ChatBot />, document.getElementById('root'));
-    </script>
+// ══════════════════════════════════════════════════════════
+//  MOTOR PRINCIPAL — getReply(msg)
+// ══════════════════════════════════════════════════════════
+function getReply(msg) {
+  // 1. Filtro de contenido
+  if (isSensitive(msg)) return pick(REDIRECTS);
+
+  const n = norm(msg);
+
+  // 2. Detección de operaciones matemáticas
+  const mathResult = tryMath(msg);
+  if (mathResult) return mathResult;
+
+  // 3. Detección de frases de definición
+  //    "qué es X", "define X", "cómo funciona X", "what is X"
+  const defPatterns = [
+    /^(?:que\s+es|qu[eé]\s+es|define|definicion\s+de|what\s+is|que\s+significa|como\s+funciona|como\s+se\s+hace)\s+(.+)$/,
+    /^(.+)\s+(?:que\s+es|como\s+funciona)$/
+  ];
+  for (const pat of defPatterns) {
+    const m = n.match(pat);
+    if (m) {
+      const concept = (m[1] || m[2] || '').trim();
+      const found = findIntentByKeyword(concept);
+      if (found) return pick(found.responses);
+    }
+  }
+
+  // 4. Búsqueda estándar por patrones en todo el mensaje
+  const intent = findIntent(msg);
+  if (intent) return pick(intent.responses);
+
+  // 5. Fallback
+  const fb = KB.intents.find(i => i.tag === 'fallback');
+  return pick(fb.responses);
+}
+
+// ══════════════════════════════════════════════════════════
+//  UI
+// ══════════════════════════════════════════════════════════
+const msgsEl = document.getElementById('msgs');
+const inpEl = document.getElementById('inp');
+const sendBtn = document.getElementById('sendBtn');
+let busy = false;
+let histList = ['💬 Nueva conversación'];
+let histActive = 0;
+
+function renderHist() {
+  document.getElementById('hist').innerHTML = histList
+    .map((t, i) => `<div class="h-item${i===histActive?' active':''}" onclick="switchH(${i})">${t}</div>`)
+    .join('');
+}
+function switchH(i) { histActive = i; renderHist(); }
+
+const WELCOME_HTML = `<div id="ws"><div class="welcome">
+  <h2>Hola, soy <span>AJ-GPT</span> ✦</h2>
+  <p>Tu asistente inteligente. Pregúntame sobre programación, ciencia,<br>matemáticas, historia, cultura o simplemente conversa.</p>
+  <div class="suggestions">
+    <div class="sug-card" onclick="suggest('¿Cómo funciona la inteligencia artificial?')"><div class="icon">🤖</div><div class="title">¿Cómo funciona la IA?</div><div class="sub">Explícame lo básico</div></div>
+    <div class="sug-card" onclick="suggest('¿Cuánto es 128 * 37 + 56?')"><div class="icon">🧮</div><div class="title">Calcula algo</div><div class="sub">128 × 37 + 56 = ?</div></div>
+    <div class="sug-card" onclick="suggest('¿Qué es un algoritmo?')"><div class="icon">💻</div><div class="title">Define un concepto</div><div class="sub">¿Qué es un algoritmo?</div></div>
+    <div class="sug-card" onclick="suggest('Dame consejos para estudiar mejor')"><div class="icon">📚</div><div class="title">Técnicas de estudio</div><div class="sub">Aprende más rápido</div></div>
+    <div class="sug-card" onclick="suggest('¿Cuáles son los planetas del sistema solar?')"><div class="icon">🪐</div><div class="title">Sistema Solar</div><div class="sub">Los 8 planetas</div></div>
+    <div class="sug-card" onclick="suggest('Cuéntame un chiste')"><div class="icon">😄</div><div class="title">Un chiste</div><div class="sub">Algo gracioso</div></div>
+  </div>
+</div></div>`;
+
+function newChat() {
+  histList.unshift('💬 Nueva conversación');
+  histActive = 0;
+  renderHist();
+  msgsEl.innerHTML = WELCOME_HTML;
+}
+
+function scrollBottom() { document.getElementById('wrap').scrollTop = 999999; }
+
+function resize(el) { el.style.height = 'auto'; el.style.height = Math.min(el.scrollHeight, 150) + 'px'; }
+
+// Renderiza markdown simple a HTML
+function renderMD(text) {
+  let h = esc(text);
+  // bloques de código
+  h = h.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, _lang, code) => `<pre><code>${code.trim()}</code></pre>`);
+  // código inline
+  h = h.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // negritas
+  h = h.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // cursivas
+  h = h.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // saltos de línea
+  h = h.replace(/\n/g, '<br>');
+  return h;
+}
+
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function addRow(role, rawText) {
+  const isUser = role === 'user';
+  const row = document.createElement('div');
+  row.className = 'row' + (isUser ? ' user' : '');
+  const html = isUser ? esc(rawText).replace(/\n/g,'<br>') : renderMD(rawText);
+  row.innerHTML = `
+    ${!isUser ? '<div class="avatar ai">AJ</div>' : ''}
+    <div class="bubble ${isUser?'user':'ai'}">${html}</div>
+    ${isUser ? '<div class="avatar user">Tú</div>' : ''}
+  `;
+  msgsEl.appendChild(row);
+  scrollBottom();
+}
+
+function showTyping() {
+  const r = document.createElement('div');
+  r.className = 'typing-row'; r.id = 'typing';
+  r.innerHTML = `<div class="avatar ai">AJ</div><div class="typing-bub"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  msgsEl.appendChild(r); scrollBottom();
+}
+function hideTyping() { const t = document.getElementById('typing'); if(t) t.remove(); }
+
+async function send() {
+  const txt = inpEl.value.trim();
+  if (!txt || busy) return;
+  busy = true; sendBtn.disabled = true;
+
+  const ws = document.getElementById('ws');
+  if (ws) ws.remove();
+
+  if (histList[histActive] === '💬 Nueva conversación') {
+    histList[histActive] = '💬 ' + txt.slice(0, 30) + (txt.length > 30 ? '…' : '');
+    renderHist();
+  }
+
+  addRow('user', txt);
+  inpEl.value = ''; resize(inpEl);
+
+  showTyping();
+  await new Promise(r => setTimeout(r, 500 + Math.random() * 800));
+  hideTyping();
+
+  addRow('ai', getReply(txt));
+
+  busy = false; sendBtn.disabled = false; inpEl.focus();
+}
+
+function suggest(txt) { inpEl.value = txt; send(); }
+function onKey(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }
+
+renderHist();
+</script>
 </body>
 </html>
